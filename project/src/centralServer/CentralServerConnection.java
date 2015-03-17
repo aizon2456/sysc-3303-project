@@ -1,18 +1,12 @@
 package centralServer;
 
 // TCP using UDP: Server
+import constants.Constants;
 import java.net.*;
 import java.io.*;
 
 public class CentralServerConnection {
 	static PrintWriter writer;
-	public static final int SEND_SIZE 	= 32;
-        public static final int PORT_SIZE       = 4;
-	public static final int DATA_SIZE 	= 32;
-	public static final int COUNT_SIZE	= 4;
-	public static final int CHKS_SIZE 	= String.valueOf(DATA_SIZE * 200).length();
-	public static final int CHKS_FACTOR     = 2;
-	public static final int PACKET_SIZE	= SEND_SIZE + DATA_SIZE + COUNT_SIZE + CHKS_SIZE;
         
         public static String currentClientId = "";
         public static int currentPacketNum = 1;
@@ -28,7 +22,7 @@ public class CentralServerConnection {
 			int socket_no = Integer.valueOf(args[0]);
 			aSocket = new DatagramSocket(socket_no);
                         //hard-coded packetsize for now
-			byte[] buffer = new byte[PACKET_SIZE];
+			byte[] buffer = new byte[Constants.PACKET_SIZE];
 			while (true) {
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 				aSocket.receive(request);
@@ -69,7 +63,7 @@ public class CentralServerConnection {
                 boolean split = false;
                 boolean endOfFile = false;
 		for (int r = 0; r < resp.length(); r++) {
-                    if (r < SEND_SIZE && !split) { //send address
+                    if (r < Constants.SEND_SIZE && !split) { //send address
                         if ((char)response[r] == '\0') {
                             split = true;
                         }
@@ -78,29 +72,29 @@ public class CentralServerConnection {
                             senderAddress += ".";
                         }
                     }
-                    else if (r < SEND_SIZE) { //send port
+                    else if (r < Constants.SEND_SIZE) { //send port
                         if ((char)response[r] == ' ') {
-                            r = SEND_SIZE - 1;
+                            r = Constants.SEND_SIZE - 1;
                         }
                         else {
                             senderPort += (char)response[r];
                         }
                     }
-                    else if (r < (SEND_SIZE + DATA_SIZE)) { //data
+                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE)) { //data
                         if ((char)response[r] == '\0') {
-                            r = SEND_SIZE + DATA_SIZE - 1;
+                            r = Constants.SEND_SIZE + Constants.DATA_SIZE - 1;
                             endOfFile = true;
                         }
                         else {
                             data += (char)response[r];
                         }
                     }
-                    else if (r < (SEND_SIZE + DATA_SIZE + COUNT_SIZE)) { //count
+                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE + Constants.COUNT_SIZE)) { //count
                         count += (char)response[r];
                     }
-                    else if (r < (SEND_SIZE + DATA_SIZE + COUNT_SIZE + CHKS_SIZE)) {
+                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE + Constants.COUNT_SIZE + Constants.CHKS_SIZE)) {
                         if ((char)response[r] == '\0') {
-                             r = SEND_SIZE + DATA_SIZE + COUNT_SIZE + CHKS_SIZE - 1;
+                             r = Constants.SEND_SIZE + Constants.DATA_SIZE + Constants.COUNT_SIZE + Constants.CHKS_SIZE - 1;
                         }
                         else {
                             checksum += (char)response[r];
@@ -128,7 +122,7 @@ public class CentralServerConnection {
                 for (int r = 0; r < data.trim().length(); r++) {
                     dataChks += (int)data.trim().charAt(r);
                 }
-                dataChks *= CHKS_FACTOR;
+                dataChks *= Constants.CHKS_FACTOR;
                 
                 if (currentPacketNum == Integer.parseInt(count.trim()) &&
                             dataChks == Integer.parseInt(checksum)) {
