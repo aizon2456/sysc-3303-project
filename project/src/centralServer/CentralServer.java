@@ -47,7 +47,7 @@ public class CentralServer {
 		//parse the data packet for relevant informations
 		String districtName, firstName, lastName = "";
 		int voteCount = 0;
-		String[] result = Constants.parsePipedString(input);
+		String[] result = input.split(Character.toString(Constants.PACKET_DELIMITER));
 		Map<String,Integer> candidatesMap = new HashMap<String,Integer>();
 		
 		if (Constants.packetType.UPDATE.name().equals(result[0]) && result.length == 5) {

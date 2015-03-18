@@ -7,9 +7,6 @@ import java.net.*;
 import java.io.*;
 
 public class CentralServerConnection {
-	static PrintWriter writer;
-    public String output = "";
-	
     /**
      * Handles the receiving of packets from DistrictServers
      * @param portNo The port number over which packets are transferred
@@ -32,7 +29,7 @@ public class CentralServerConnection {
 		       return null;
 		    }     
 			
-			returnValue = parseFile(request.getData());
+			returnValue = parsePacket(request.getData());
 		} 
 		catch (SocketException e) {
 			System.out.println("Socket: " + e.getMessage());
@@ -54,23 +51,17 @@ public class CentralServerConnection {
 	 * @param response The packet being passed in by the current DistrictServer
 	 * @return The data string
 	 */
-	public String parseFile(byte[] response){
+	public String parsePacket(byte[] response){
 		
-		String resp 			= new String(response);
-		String data             = "";
+		String resp = new String(response);
+		String data = "";
 		
-		for (int r = Constants.SEND_SIZE; r < resp.length(); r++) {
-            if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE)) { //data
-                if ((char)response[r] == Constants.PACKET_END) {
-                    r = Constants.SEND_SIZE + Constants.DATA_SIZE - 1;
-                }
-                else {
-                    data += (char)response[r];
-                }
+		for (int r = 0; r < resp.length(); r++) {
+            if ((char)response[r] == Constants.PACKET_END) {
+                break;
             }
             else {
-                System.out.println("Invalid character " + (char)response[r] + " at index " + r);
-                return "";
+                data += (char)response[r];
             }
 		}
 		
