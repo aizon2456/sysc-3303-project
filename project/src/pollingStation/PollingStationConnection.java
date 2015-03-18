@@ -26,16 +26,14 @@ public class PollingStationConnection {
 
 		try {
 			aSocket = new DatagramSocket();
-		} 
-                catch (SocketException e) {
+		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
-                        System.exit(1);
+            System.exit(1);
 		}
 
 	}
 
     public void closeSocket() {
-        System.out.println("\nEnding Client");
         if (aSocket != null)
             aSocket.close();
     }
@@ -58,27 +56,21 @@ public class PollingStationConnection {
 
             byte[] sendAddressBytes = source.getAddress();
             byte[] sendPortBytes = String.format("%" + Constants.PORT_SIZE + "d", districtServerPort).getBytes();
-            String sendPadChars = "";
-            for (int u = 0; u < (Constants.SEND_SIZE - new String(sendAddressBytes).length() - new String(sendPortBytes).length() - 1); u++) {
-                sendPadChars += " ";
-            }
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             byteStream.write(sendAddressBytes); //address
             byteStream.write((byte) '\0');
             byteStream.write(sendPortBytes); //port
-            byteStream.write(sendPadChars.getBytes());
             send = byteStream.toByteArray();
 
             byteStream = new ByteArrayOutputStream();
             byteStream.write(send);
             byteStream.write(data);
             outPacket = byteStream.toByteArray();
-            System.out.println("Sending Packet: " + new String(outPacket));
             DatagramPacket request = new DatagramPacket(outPacket, outPacket.length,
-                            destinationAddress, districtServerPort);
+                                            destinationAddress, districtServerPort);
             aSocket.setSoTimeout(1000);
             aSocket.send(request);
-            byte[] buffer = new byte[1]; //response is a single byte
+            byte[] buffer = new byte[Constants.DATA_SIZE];
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
             aSocket.receive(reply);
 
