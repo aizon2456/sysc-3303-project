@@ -14,6 +14,8 @@ public class PollingView implements Observer {
     private JTextField ErrorMessage;
     private JButton register, login, vote;
     private JButton mainRegister, mainLogin;
+    private JTextField firstNameField, lastNameField, sinField, loginField, passwordField;
+    private int state = 0; // TODO: use this to indicate which menu we are looking at
 
     public PollingView(boolean test, String[] Candidates){
         frame = new JFrame();
@@ -48,7 +50,20 @@ public class PollingView implements Observer {
         register = new JButton("Register");
         register.setBounds(0,0,300,30);
         RegisterPanel.add(register);
+
         //TODO: Create fields for registration
+        firstNameField = new JTextField("");
+        lastNameField = new JTextField("");
+        sinField = new JTextField("");
+        loginField = new JTextField("");
+        passwordField = new JTextField("");
+
+        RegisterPanel.add(firstNameField);
+        RegisterPanel.add(lastNameField);
+        RegisterPanel.add(sinField);
+        RegisterPanel.add(loginField);
+        RegisterPanel.add(passwordField);
+
 
         login = new JButton("Login");
 
@@ -67,6 +82,7 @@ public class PollingView implements Observer {
 
         frame.setVisible(true);
         frame.setEnabled(true);
+
     }
 
     private void showMainMenu(){
@@ -106,24 +122,34 @@ public class PollingView implements Observer {
         login.addActionListener(controller);
     }
 
+    public String[] loginPopup() {
+        JTextField username = new JTextField();
+        JTextField password = new JPasswordField();
+        Object[] message = {
+                "Username:", username,
+                "Password:", password
+        };
+
+        JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+        return new String[] {username.getText(), password.getText()};
+    }
+
     @Override
     public void update(Observable o, Object arg) {
+
         if(arg==Constants.returnCodes.SUCCESS){
 
-        }
-        else if(arg==Constants.returnCodes.NON_EXISTENT){
+        } else if(arg==Constants.returnCodes.NON_EXISTENT){
 
-        }
-        else if(arg==Constants.returnCodes.ALREADY_REGISTERED){
+        } else if(arg==Constants.returnCodes.ALREADY_REGISTERED){
 
-        }
-        else if(arg==Constants.returnCodes.WRONG_CREDENTIALS){
+        } else if(arg==Constants.returnCodes.WRONG_CREDENTIALS){
 
-        }
-        else if(arg==Constants.returnCodes.ALREADY_VOTED){
+        } else if(arg==Constants.returnCodes.ALREADY_VOTED) {
 
-        }
-        else {
+        } else if (arg == Constants.packetType.NO_RESPONSE) {
+            System.out.println("NO RESPONSE");
+        } else {
             System.out.println("Unknown Response: "+ arg.toString());
         }
     }

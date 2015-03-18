@@ -32,6 +32,8 @@ public class PollingStationLauncher implements Runnable {
         PollingController controller = new PollingController();
 
         controller.addModel(server);
+        controller.addView(view);
+        server.addObserver(view);
         view.addController(controller);
     }
 }
