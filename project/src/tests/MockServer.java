@@ -26,8 +26,8 @@ public class MockServer extends Thread {
             DatagramPacket reply = new DatagramPacket(response, response.length,
                                         request.getAddress(), request.getPort());
             aSocket.send(reply);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        } catch (Exception ignored) {
+
         } finally {
             if (aSocket != null)
                 aSocket.close();

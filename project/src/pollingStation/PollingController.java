@@ -5,7 +5,11 @@ import java.awt.event.ActionListener;
 
 public class PollingController implements ActionListener {
 
-    PollingStationServer model;
+    private static final int USERNAME = 0;
+    private static final int PASSWORD = 1;
+
+    private PollingStationServer model;
+    private PollingView view;
 
     public PollingController() {
 
@@ -15,8 +19,19 @@ public class PollingController implements ActionListener {
         this.model = model;
     }
 
+    public void addView(PollingView view) {
+        this.view = view;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO: add button listeners
+        String option = e.getActionCommand();
+
+        System.out.println("Action Performed: " + option);
+
+        if (option.equals("Login")) {
+            String[] loginInformation = view.loginPopup();
+            model.login(loginInformation[USERNAME], loginInformation[PASSWORD]);
+        }
     }
 }
