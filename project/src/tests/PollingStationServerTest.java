@@ -25,7 +25,7 @@ public class PollingStationServerTest {
     @Before
     public void setup() {
         pollingStationServer = new PollingStationServer(DISTRICT_SERVER_ADDRESS, DISTRICT_PORT);
-        (new MockServer(DISTRICT_PORT, Constants.DATA_SIZE)).start(); // create mock server
+        (new MockServer(DISTRICT_PORT, Constants.PACKET_SIZE)).start(); // create mock server
     }
 
     @Test

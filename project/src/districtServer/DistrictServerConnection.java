@@ -7,7 +7,7 @@ import constants.Constants;
 public class DistrictServerConnection {
 
 	private DatagramPacket request;
-	
+
 	public DistrictServerConnection(){}
 
 	/**
@@ -40,6 +40,11 @@ public class DistrictServerConnection {
 		return null;
 	}
 	
+	/**
+	 * Sends the result of the previous request back to the original sender.
+	 * @param returnCode the result of the most recent request
+	 * @param districtServerPort the port that the message is being sent from
+	 */
 	public void send(Constants.returnCodes returnCode, int districtServerPort){
 		DatagramSocket aSocket = null;
 		try {
@@ -48,7 +53,6 @@ public class DistrictServerConnection {
 
 			DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
 			aSocket.send(response);
-			request = null;
 			
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
@@ -58,5 +62,9 @@ public class DistrictServerConnection {
 			if (aSocket != null)
 				aSocket.close();
 		}
+	}
+	
+	public DatagramPacket getRequest() {
+		return request;
 	}
 }

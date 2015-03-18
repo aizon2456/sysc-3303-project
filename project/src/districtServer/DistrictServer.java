@@ -1,6 +1,10 @@
 package districtServer;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import constants.Constants;
 
@@ -21,7 +25,7 @@ public class DistrictServer {
 
 	public DistrictServer(String[] commandLineArguments){
 
-		
+		setUpFileLogger(commandLineArguments[0]);
 		validateCommandLineArguments(commandLineArguments);
 		buildVoterCandidateList(commandLineArguments[0]);
 		districtServerConnection = new DistrictServerConnection();
@@ -29,12 +33,39 @@ public class DistrictServer {
 		
 		while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
+			LOGGER.info("Listening for requests!");
 			packetData = districtServerConnection.beginListening(districtServerPort);
+			LOGGER.info("Received request: " + new String(packetData));
 			Constants.returnCodes returnCode = parsePacketDataAndPerformCorresspondingAction(packetData);
+			LOGGER.info("Result of packet: " + returnCode);
 			districtServerConnection.send(returnCode, districtServerPort);
+			int port = districtServerConnection.getRequest().getPort();
+			LOGGER.info("Message sent to port: " + port + " at address: " + districtServerConnection.getRequest().getAddress());
 		}
 	}
 
+	private void setUpFileLogger(String logName){
+		 FileHandler fh;  
+
+		    try {  
+
+		        // This block configure the logger with handler and formatter  
+		    	String logLocation = System.getProperty("user.dir") + "\\" + logName + ".log";
+		    	System.out.println(logLocation);
+		        fh = new FileHandler(logLocation);  
+		        LOGGER.addHandler(fh);
+		        SimpleFormatter formatter = new SimpleFormatter();  
+		        fh.setFormatter(formatter);  
+
+		    } catch (SecurityException e) {  
+		        e.printStackTrace();  
+		    } catch (IOException e) {  
+		        e.printStackTrace();  
+		    }  
+		    LOGGER.setLevel(Level.INFO);
+		    LOGGER.info("Logger initialized");  
+	}
+	
 	/**
 	 * Parses the packet data to determine what the user is requesting.
 	 * @param packetData
@@ -47,9 +78,6 @@ public class DistrictServer {
 		String[] packetDataInformation = request.split(delimiter);
 		String firstName = null, lastName = null, sin = null, login = null, password = null;
 		Constants.returnCodes status = null;
-		
-		System.out.println("Request: " + request);
-		System.out.println("PacketData " + packetDataInformation.toString());
 		
 		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
 			firstName = packetDataInformation[1];
@@ -150,6 +178,7 @@ public class DistrictServer {
 	private void validateCommandLineArguments(String[] commandLineArguments){
 		if(commandLineArguments.length < 3){
 			System.out.println("Invalid number of arguments!");
+			LOGGER.severe("Invalid number of arguments!");
 			printUsageInstructions();
 			System.exit(1);
 		}
@@ -157,12 +186,14 @@ public class DistrictServer {
 		try{districtServerPort = Integer.parseInt(commandLineArguments[1].trim());}
 		catch(NumberFormatException e){
 			System.out.println("Invalid district port format! " + commandLineArguments[1].trim());
+			LOGGER.severe("Invalid district port format! " + commandLineArguments[1].trim());
 			printUsageInstructions();
 			System.exit(1);
 		}
 
 		if(districtServerPort <= 1024 || districtServerPort >= 65536){
 			System.out.println("Invalid district port number! " + districtServerPort);
+			LOGGER.severe("Invalid district port number! " + districtServerPort);
 			printUsageInstructions();
 			System.exit(1);
 		}
@@ -170,12 +201,14 @@ public class DistrictServer {
 		try{centralServerPort = Integer.parseInt(commandLineArguments[2].trim());}
 		catch(NumberFormatException e){
 			System.out.println("Invalid central port format! " + commandLineArguments[2].trim());
+			LOGGER.severe("Invalid central port format! " + commandLineArguments[2].trim());
 			printUsageInstructions();
 			System.exit(1);
 		}
 
 		if(centralServerPort <= 1024 || centralServerPort >= 65536){
 			System.out.println("Invalid central port number! " + centralServerPort);
+			LOGGER.severe("Invalid central port number! " + centralServerPort);
 			printUsageInstructions();
 			System.exit(1);
 		}
@@ -185,11 +218,12 @@ public class DistrictServer {
 
 			if(!centralServerIP.matches(Constants.IPV4_REGEX)){
 				System.out.println("Invalid central server IP address! " + centralServerIP);
+				LOGGER.severe("Invalid central server IP address! " + centralServerIP);
 				printUsageInstructions();
 				System.exit(1);
 			}
 		}
-		catch(IndexOutOfBoundsException e){System.out.println("No central server IP specified");centralServerIP = "127.0.0.1";}
+		catch(IndexOutOfBoundsException e){LOGGER.warning("No central server IP specified");centralServerIP = "127.0.0.1";}
 	}
 
 	/**
@@ -201,13 +235,16 @@ public class DistrictServer {
 	private void buildVoterCandidateList(String districtServerName){
 		FileInfoReader fileInfoReader = new FileInfoReader();
 		if(fileInfoReader.isValidDistrictName(districtServerName)){this.districtName = districtServerName;}	
-		else{System.out.println("Invalid District Name"); System.exit(1);}
+		else{System.out.println("Invalid District Name"); System.exit(1); LOGGER.severe("Invalid District Name"); System.exit(1);}
+		LOGGER.info("District name is valid: " + districtName);
 
 		voters = fileInfoReader.buildVoterList(districtServerName);
+		LOGGER.info("List of voters generated.");
+		LOGGER.info("Number of voters: " + voters.size());
+		
 		candidates = fileInfoReader.buildCandidateList(districtServerName);
-
-		System.out.println("Number of voters: " + voters.size());
-		System.out.println("Number of candidates " + candidates.size());
+		LOGGER.info("List of candidates generated");
+		LOGGER.info("Number of candidates " + candidates.size());
 	}
 
 	private void printUsageInstructions(){
