@@ -8,7 +8,7 @@ import pollingStation.PollingStationConnection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestPollingStationConnection {
+public class PollingStationConnectionTest {
 
     private static final String DISTRICT_SERVER_ADDRESS = "127.0.0.1";
     private static final int DISTRICT_PORT = 2015;

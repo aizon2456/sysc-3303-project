@@ -2,7 +2,7 @@ package districtServer;
 
 public class Candidate extends Person{
 
-	int numVotes;
+	private int numVotes;
 
 	public Candidate (String firstName, String lastName, String socialInsuranceNumber){
 		super(firstName, lastName, socialInsuranceNumber);

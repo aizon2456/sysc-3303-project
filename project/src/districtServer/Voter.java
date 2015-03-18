@@ -8,6 +8,8 @@ public class Voter extends Person {
 	public Voter(String firstName, String lastName, String socialInsuranceNumber, String district){
 		super(firstName, lastName, socialInsuranceNumber);
 		this.district = district;
+        voted = false;
+        registered = false;
 	}
 	
 	public boolean vote(){
@@ -62,19 +64,29 @@ public class Voter extends Person {
 			voter = (Voter)obj;
 		else
 			return false;
-		
+
 		//Compares ALL of the attributes of Voter to ensure the two are entirely equal.
 		if(!(this.socialInsuranceNumber.equals(voter.getSocialInsuranceNumber())))
 			return false;
-		if(!(this.loginName.equals(voter.getLoginName())))
-			return false;
-		if(!(this.password.equals(voter.getPassword())))
-			return false;
+		if (this.loginName != null) {
+            if (voter.getLoginName() == null)
+                return false;
+
+            if(!(this.loginName.equals(voter.getLoginName())))
+                return false;
+        }
+        if (this.password != null) {
+            if (voter.getPassword() == null)
+                return false;
+
+            if(!(this.password.equals(voter.getPassword())))
+                return false;
+        }
 		if(!(this.registered == voter.isRegistered()))
 			return false;
 		if(!(this.voted == voter.hasVoted()))
 			return false;
-		
+
 		return true;
 	}
 }

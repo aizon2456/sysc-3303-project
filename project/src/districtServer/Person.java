@@ -2,7 +2,7 @@ package districtServer;
 
 public abstract class Person {
 	
-	String firstName, lastName, socialInsuranceNumber;;
+	protected String firstName, lastName, socialInsuranceNumber;
 
 	public Person(String firstName, String lastName, String socialInsuranceNumber){
 		this.firstName = firstName;

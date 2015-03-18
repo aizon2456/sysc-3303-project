@@ -7,7 +7,7 @@ import pollingStation.PollingStationServer;
 
 import static org.junit.Assert.assertTrue;
 
-public class TestPollingStationServer {
+public class PollingStationServerTest {
 
     private static final String DISTRICT_SERVER_ADDRESS = "127.0.0.1";
     private static final int DISTRICT_PORT = 2015;
