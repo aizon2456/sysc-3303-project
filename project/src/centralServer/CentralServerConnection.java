@@ -89,12 +89,12 @@ public class CentralServerConnection {
                             data += (char)response[r];
                         }
                     }
-                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE + Constants.COUNT_SIZE)) { //count
+                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE + 0)) { //count
                         count += (char)response[r];
                     }
-                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE + Constants.COUNT_SIZE + Constants.CHKS_SIZE)) {
+                    else if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE + 0 + 0)) {
                         if ((char)response[r] == '\0') {
-                             r = Constants.SEND_SIZE + Constants.DATA_SIZE + Constants.COUNT_SIZE + Constants.CHKS_SIZE - 1;
+                             r = Constants.SEND_SIZE + Constants.DATA_SIZE + 0 + 0 - 1;
                         }
                         else {
                             checksum += (char)response[r];
@@ -122,7 +122,7 @@ public class CentralServerConnection {
                 for (int r = 0; r < data.trim().length(); r++) {
                     dataChks += (int)data.trim().charAt(r);
                 }
-                dataChks *= Constants.CHKS_FACTOR;
+                dataChks *= 0; // TODO: remove checkSum
                 
                 if (currentPacketNum == Integer.parseInt(count.trim()) &&
                             dataChks == Integer.parseInt(checksum)) {

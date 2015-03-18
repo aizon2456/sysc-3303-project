@@ -1,7 +1,5 @@
 package districtServer;
 
-import javax.swing.SwingUtilities;
-
 public class Launcher {
 	
 	/** @param args String name describing the district of the server: Ottawa-Carleton, Gatineau

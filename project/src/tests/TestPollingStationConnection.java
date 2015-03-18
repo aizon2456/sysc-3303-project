@@ -10,7 +10,7 @@ public class TestPollingStationConnection {
 
     @Before
     public void setUp() {
-        connection = new PollingStationConnection();
+//        connection = new PollingStationConnection();
     }
 
     @Test
