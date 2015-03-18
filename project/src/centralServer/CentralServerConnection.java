@@ -15,7 +15,7 @@ public class CentralServerConnection {
      * @param portNo The port number over which packets are transferred
      * @return The data in string representation which can be parsed
      */
-	public String receive(int portNo) {
+	public String receiveCandidateVotes(int portNo) {
 		DatagramSocket aSocket = null;
 		String returnValue = "";
 		try {
@@ -23,19 +23,30 @@ public class CentralServerConnection {
 			byte[] buffer = new byte[Constants.PACKET_SIZE];
 			
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-			aSocket.receive(request);                 				
-			returnValue = parseFile(request.getData());
 			
-		} catch (SocketException e) {
+			aSocket.setSoTimeout(Constants.ELECTION_OVER);
+			try {
+				aSocket.receive(request);
+		    } catch (SocketTimeoutException e) {
+		       // election must be done
+		       return null;
+		    }     
+			
+			returnValue = parseFile(request.getData());
+		} 
+		catch (SocketException e) {
 			System.out.println("Socket: " + e.getMessage());
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			System.out.println("IO: " + e.getMessage());
-		} finally {
+		} 
+		finally {
 			if (aSocket != null)
 				aSocket.close();
 		}
 		return returnValue;
 	}
+	
 	/**
 	 * This function takes in the data received, parses out the information
 	 * then passes it all to the CentralServer.
