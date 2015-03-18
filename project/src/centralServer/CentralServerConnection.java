@@ -21,6 +21,7 @@ public class CentralServerConnection {
 			
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 			
+			aSocket.setSoTimeout(30000);
 			try {
 				aSocket.receive(request);
 		    } catch (SocketTimeoutException e) {
