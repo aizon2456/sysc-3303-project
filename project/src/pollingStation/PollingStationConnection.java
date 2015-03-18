@@ -51,30 +51,19 @@ public class PollingStationConnection {
 	public String sendMessage(String message) {
 
 		byte[] outPacket;
-		byte[] send; //this address
 		byte[] data = message.getBytes();
 
         try {
             InetAddress destinationAddress 	= InetAddress.getByName(districtServerAddress);
-            InetAddress source = InetAddress.getLocalHost();
 
-            byte[] sendAddressBytes = source.getAddress();
-            byte[] sendPortBytes = String.format("%" + Constants.PORT_SIZE + "d", districtServerPort).getBytes();
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            byteStream.write(sendAddressBytes); //address
-            byteStream.write((byte) '\0');
-            byteStream.write(sendPortBytes); //port
-            send = byteStream.toByteArray();
-
-            byteStream = new ByteArrayOutputStream();
-            byteStream.write(send);
             byteStream.write(data);
             outPacket = byteStream.toByteArray();
             DatagramPacket request = new DatagramPacket(outPacket, outPacket.length,
                                             destinationAddress, districtServerPort);
             socket.setSoTimeout(1000);
             socket.send(request);
-            byte[] buffer = new byte[Constants.DATA_SIZE];
+            byte[] buffer = new byte[Constants.PACKET_SIZE];
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
             socket.receive(reply);
 

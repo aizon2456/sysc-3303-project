@@ -1,48 +1,55 @@
 package districtServer;
 
-// TCP using UDP: Impairment Server
 import java.net.*;
 import java.io.*;
+import constants.Constants;
 
 public class DistrictServerConnection {
 
-	public static final int SEND_SIZE 	= 32;
-	public static final int PORT_SIZE       = 4;
-	public static final int DATA_SIZE 	= 32;
-	public static final int COUNT_SIZE	= 4;
-	public static final int CHKS_SIZE 	= String.valueOf(DATA_SIZE * 200).length();
-	public static final int CHKS_FACTOR     = 2;
-	public static final int PACKET_SIZE	= SEND_SIZE + DATA_SIZE + COUNT_SIZE + CHKS_SIZE;
-
+	private DatagramPacket request;
+	
+	public DistrictServerConnection(){}
 
 	/**
 	 * This function begins the main server listening loop, it takes messages
 	 * it receives, corrupts them a little then forwards it to the main server.
 	 * The response from the main server is forwarded to the client
-	 * @param port which is the Client port
-	 * @param fPort which is the Main Server's port
-	 * @param fAddr which is the Main Server's host IP Address
+	 * @param districtServerPort which is the Client port
+	 * @param centralServerPort which is the Main Server's port
+	 * @param centralIP which is the Main Server's host IP Address
 	 * @return
 	 */
-	public static void beginListen(int port, String fPort, String fAddr){
+	public byte[] beginListening(int districtServerPort){
 		DatagramSocket aSocket = null;
 		try {
-			aSocket = new DatagramSocket(port);
-			byte[] buffer = new byte[PACKET_SIZE];
-			while (true) {
-				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-				aSocket.receive(request);
+			aSocket = new DatagramSocket(districtServerPort);
+			byte[] buffer = new byte[Constants.PACKET_SIZE];
 
-				// dropping packets
-				if(Math.random()< 0.96){
-					//String resp  = scrambleAndSendMessage(request.getData(),fAddr,fPort);
+			request = new DatagramPacket(buffer, buffer.length);
+			aSocket.receive(request);
+			return request.getData();
+			
+		} catch (SocketException e) {
+			System.out.println("Socket Error: " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO Error: " + e.getMessage());
+		} finally {
+			if (aSocket != null)
+				aSocket.close();
+		}
+		return null;
+	}
+	
+	public void send(Constants.returnCodes returnCode, int districtServerPort){
+		DatagramSocket aSocket = null;
+		try {
+			aSocket = new DatagramSocket(districtServerPort);
+			byte[] buffer = new byte[Constants.PACKET_SIZE];
 
-					//					DatagramPacket reply = new DatagramPacket(resp.getBytes(),
-					//							resp.length(), request.getAddress(),
-					//							request.getPort());
-					//					aSocket.send(reply);
-				}
-			}
+			DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
+			aSocket.send(response);
+			request = null;
+			
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
 		} catch (IOException e) {
@@ -52,56 +59,4 @@ public class DistrictServerConnection {
 				aSocket.close();
 		}
 	}
-	/**
-	 * This function takes the message sent from the client, corrupts the data
-	 * Then send it to the main server and returns the server's response
-	 * @param message		-> Message from Client
-	 * @param destination 	-> Real Server Address
-	 * @param port 			-> Real Server address
-	 * @return				-> Response from Real Server
-	 */
-	public static String scrambleAndSendMessage(byte[] message, String destination, String port){
-		String res="";
-		DatagramSocket bSocket = null;
-		try {
-			int serverPort = Integer.valueOf(port);
-			bSocket = new DatagramSocket();
-			byte[] m = scramble(message);
-			InetAddress aHost = InetAddress.getByName(destination);
-			DatagramPacket request = new DatagramPacket(m, m.length,
-					aHost, serverPort);
-
-			bSocket.send(request);
-
-			byte[] buffer = new byte[PACKET_SIZE];
-			DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-			bSocket.receive(reply); //reply from actual server		
-			res = new String(reply.getData());
-		} catch (SocketException e) {
-			System.out.println("Socket Error: " + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("IO Error: " + e.getMessage());
-		} finally {
-			if (bSocket != null)
-				bSocket.close();
-		}
-		return (res);
-	}
-
-	/**
-	 * Randomly scrambles the data portion of a packet with incorrect data
-	 * @param message
-	 * @return 
-	 */
-	public static byte[] scramble(byte[] message){
-		// only mess up the data bits
-		for(int i = SEND_SIZE; i < (SEND_SIZE + DATA_SIZE); i++){
-			if(Math.random()>0.95){
-				message[i]+= (int)(Math.random()*15)-7;
-			}	
-		}	
-		DatagramPacket reply = new DatagramPacket(message, message.length);
-		return reply.getData();
-	}
-
 }

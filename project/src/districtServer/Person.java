@@ -32,6 +32,5 @@ public abstract class Person {
 
 	public void setSocialInsuranceNumber(String socialInsuranceNumber) {
 		this.socialInsuranceNumber = socialInsuranceNumber;
-	}
-	
+	}	
 }

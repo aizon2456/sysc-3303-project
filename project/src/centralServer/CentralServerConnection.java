@@ -7,15 +7,12 @@ import java.net.*;
 import java.io.*;
 
 public class CentralServerConnection {
-	static PrintWriter writer;
-    public String output = "";
-	
     /**
      * Handles the receiving of packets from DistrictServers
      * @param portNo The port number over which packets are transferred
      * @return The data in string representation which can be parsed
      */
-	public String receive(int portNo) {
+	public String receiveCandidateVotes(int portNo) {
 		DatagramSocket aSocket = null;
 		String returnValue = "";
 		try {
@@ -23,19 +20,29 @@ public class CentralServerConnection {
 			byte[] buffer = new byte[Constants.PACKET_SIZE];
 			
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-			aSocket.receive(request);                 				
-			returnValue = parseFile(request.getData());
 			
-		} catch (SocketException e) {
+			try {
+				aSocket.receive(request);
+		    } catch (SocketTimeoutException e) {
+		       // election must be done
+		       return null;
+		    }     
+			
+			returnValue = parsePacket(request.getData());
+		} 
+		catch (SocketException e) {
 			System.out.println("Socket: " + e.getMessage());
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			System.out.println("IO: " + e.getMessage());
-		} finally {
+		} 
+		finally {
 			if (aSocket != null)
 				aSocket.close();
 		}
 		return returnValue;
 	}
+	
 	/**
 	 * This function takes in the data received, parses out the information
 	 * then passes it all to the CentralServer.
@@ -43,23 +50,17 @@ public class CentralServerConnection {
 	 * @param response The packet being passed in by the current DistrictServer
 	 * @return The data string
 	 */
-	public String parseFile(byte[] response){
+	public String parsePacket(byte[] response){
 		
-		String resp 			= new String(response);
-		String data             = "";
+		String resp = new String(response);
+		String data = "";
 		
-		for (int r = Constants.SEND_SIZE; r < resp.length(); r++) {
-            if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE)) { //data
-                if ((char)response[r] == '\0') {
-                    r = Constants.SEND_SIZE + Constants.DATA_SIZE - 1;
-                }
-                else {
-                    data += (char)response[r];
-                }
+		for (int r = 0; r < resp.length(); r++) {
+            if ((char)response[r] == Constants.PACKET_END) {
+                break;
             }
             else {
-                System.out.println("Invalid character " + (char)response[r] + " at index " + r);
-                return "";
+                data += (char)response[r];
             }
 		}
 		

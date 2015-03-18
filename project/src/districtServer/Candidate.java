@@ -20,4 +20,16 @@ public class Candidate extends Person{
 	public void incrementNumVotes(){
 		this.numVotes ++;
 	}
+	
+	public boolean equals (Object obj){
+		Candidate candidate = null;
+		if(obj instanceof Candidate){
+			candidate = (Candidate)obj;
+		}else return false;
+
+		if(!(this.socialInsuranceNumber.equals(candidate.getSocialInsuranceNumber())))
+			return false;
+		
+		return true;
+	}
 }
