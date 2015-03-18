@@ -10,6 +10,7 @@ public final class Constants {
     public static final int DATA_SIZE = 256;
     public static final int PACKET_SIZE = SEND_SIZE + DATA_SIZE;
     public static final char PACKET_DELIMITER = '|';
+    public static final char PACKET_END = '\0';
 
     public static enum packetType {
         REGISTER, LOGIN, VOTE, RESULT, UPDATE, NO_RESPONSE

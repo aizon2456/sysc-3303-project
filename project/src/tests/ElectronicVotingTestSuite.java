@@ -6,7 +6,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-        TestPollingStationConnection.class
+        TestPollingStationConnection.class,
+        TestPollingStationServer.class
 })
 public class ElectronicVotingTestSuite {
 
