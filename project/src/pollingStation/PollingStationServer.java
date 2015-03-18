@@ -38,7 +38,7 @@ public class PollingStationServer extends Observable {
         String response = stationConnection.sendMessage(Constants.packetType.LOGIN + delimiter + login + delimiter
                 + password + Constants.PACKET_END);
 
-        notifyObservers(response);
+        updateObservers(response);
         return response;
     }
 
@@ -49,7 +49,7 @@ public class PollingStationServer extends Observable {
         String response = stationConnection.sendMessage(Constants.packetType.VOTE + delimiter + login + delimiter
                 + candidateSIN + Constants.PACKET_END);
 
-        notifyObservers(response);
+        updateObservers(response);
         return response;
     }
 

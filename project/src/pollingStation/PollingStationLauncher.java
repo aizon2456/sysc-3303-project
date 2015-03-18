@@ -12,12 +12,12 @@ public class PollingStationLauncher implements Runnable {
      */
     public static void main(String[] args) {
 
-        if (args.length < 2) {
-            System.out.println("Missing parameters");
-            return;
-        }
+//        if (args.length < 2) {
+//            System.out.println("Missing parameters");
+//            return;
+//        }
 
-        (new Thread(new PollingStationLauncher(args[0], Integer.parseInt(args[1])))).start();
+        (new Thread(new PollingStationLauncher("127.0.0.1", 2015))).start();
     }
 
     public PollingStationLauncher(String address, int port) {
@@ -28,10 +28,12 @@ public class PollingStationLauncher implements Runnable {
     @Override
     public void run() {
         PollingStationServer server = new PollingStationServer(districtServerAddress, districtServerPort);
-        PollingView view = new PollingView();
+        PollingView view = new PollingView(false, new String[] {});
         PollingController controller = new PollingController();
 
         controller.addModel(server);
+        controller.addView(view);
+        server.addObserver(view);
         view.addController(controller);
     }
 }
