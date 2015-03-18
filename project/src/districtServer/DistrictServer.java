@@ -1,5 +1,6 @@
 package districtServer;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import constants.Constants;
 
@@ -16,9 +17,11 @@ public class DistrictServer {
 	private ArrayList<Voter> voters;
 	private ArrayList<Candidate> candidates;
 	private DistrictServerConnection districtServerConnection;
+	private final static Logger LOGGER = Logger.getLogger(DistrictServer.class.getName()); 
 
 	public DistrictServer(String[] commandLineArguments){
 
+		
 		validateCommandLineArguments(commandLineArguments);
 		buildVoterCandidateList(commandLineArguments[0]);
 		districtServerConnection = new DistrictServerConnection();
