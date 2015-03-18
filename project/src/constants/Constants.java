@@ -12,6 +12,7 @@ public final class Constants {
 	public static final int DATA_SIZE 			= 256;
 	public static final int PACKET_SIZE			= SEND_SIZE + DATA_SIZE;
 	public static final char PACKET_DELIMITER 	= '|';
+	public static final char PACKET_END			= '\0';
 	
 	/**
 	 * Time in seconds that the central/district servers have to sit without
@@ -21,7 +22,7 @@ public final class Constants {
 	public static final int TEST_ELECTION_OVER	= 5000; // 5 seconds
         
     public static enum packetType {
-        REGISTER, LOGIN, VOTE, RESULT, UPDATE
+        REGISTER, LOGIN, VOTE, RESULT, UPDATE, NO_RESPONSE
     }
     
     public static enum returnCodes {

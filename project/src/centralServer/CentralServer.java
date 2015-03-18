@@ -15,7 +15,11 @@ public class CentralServer {
 		
 		// args contains the port number
 		if (args.length != 1) {
-			System.out.println("Usage: java CentralServer <Port Number> ");
+			System.out.println("Usage: java CentralServer <Port Number>");
+			System.exit(1);
+		}
+		else if (Integer.parseInt(args[0]) < 1025 || Integer.parseInt(args[0]) > 65535) {
+			System.out.println("The port number must be between 1025 and 65535.");
 			System.exit(1);
 		}
 		
@@ -40,7 +44,7 @@ public class CentralServer {
 	 * @param input The string directly pulled from the data packet
 	 */
 	private void updateVotes(String input) {
-		//parse the data packet for relevant information
+		//parse the data packet for relevant informations
 		String districtName, firstName, lastName = "";
 		int voteCount = 0;
 		String[] result = Constants.parsePipedString(input);

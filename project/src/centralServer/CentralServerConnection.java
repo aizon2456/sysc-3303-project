@@ -61,7 +61,7 @@ public class CentralServerConnection {
 		
 		for (int r = Constants.SEND_SIZE; r < resp.length(); r++) {
             if (r < (Constants.SEND_SIZE + Constants.DATA_SIZE)) { //data
-                if ((char)response[r] == '\0') {
+                if ((char)response[r] == Constants.PACKET_END) {
                     r = Constants.SEND_SIZE + Constants.DATA_SIZE - 1;
                 }
                 else {
