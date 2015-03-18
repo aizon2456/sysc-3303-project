@@ -14,7 +14,7 @@ public class DistrictServerConnection {
 	public static final int CHKS_FACTOR     = 2;
 	public static final int PACKET_SIZE	= SEND_SIZE + DATA_SIZE + COUNT_SIZE + CHKS_SIZE;
 
-	
+
 	/**
 	 * This function begins the main server listening loop, it takes messages
 	 * it receives, corrupts them a little then forwards it to the main server.
@@ -35,12 +35,12 @@ public class DistrictServerConnection {
 
 				// dropping packets
 				if(Math.random()< 0.96){
-					String resp  = scrambleAndSendMessage(request.getData(),fAddr,fPort);
+					//String resp  = scrambleAndSendMessage(request.getData(),fAddr,fPort);
 
-					DatagramPacket reply = new DatagramPacket(resp.getBytes(),
-							resp.length(), request.getAddress(),
-							request.getPort());
-					aSocket.send(reply);
+					//					DatagramPacket reply = new DatagramPacket(resp.getBytes(),
+					//							resp.length(), request.getAddress(),
+					//							request.getPort());
+					//					aSocket.send(reply);
 				}
 			}
 		} catch (SocketException e) {
