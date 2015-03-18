@@ -17,6 +17,8 @@ public class PollingController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO: add button listeners
+        String option = e.getActionCommand();
+
+        System.out.println("Action Performed: " + option);
     }
 }

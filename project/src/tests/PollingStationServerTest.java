@@ -25,11 +25,11 @@ public class PollingStationServerTest {
     @Before
     public void setup() {
         pollingStationServer = new PollingStationServer(DISTRICT_SERVER_ADDRESS, DISTRICT_PORT);
+        (new MockServer(DISTRICT_PORT, Constants.DATA_SIZE)).start(); // create mock server
     }
 
     @Test
     public void testVoterRegistration() {
-        (new MockServer(DISTRICT_PORT, Constants.DATA_SIZE)).start(); // create mock server
         String response = pollingStationServer.register(FIRST_NAME, LAST_NAME, SIN, LOGIN_NAME, PASSWORD);
 
         assertTrue("", response.contains(FIRST_NAME));
@@ -46,7 +46,6 @@ public class PollingStationServerTest {
 
     @Test
     public void testVoterSuccessfulLogin() {
-        (new MockServer(DISTRICT_PORT, Constants.DATA_SIZE)).start(); // create mock server
         String response = pollingStationServer.login(LOGIN_NAME, PASSWORD);
 
         assertTrue("", response.contains(LOGIN_NAME));
@@ -60,7 +59,6 @@ public class PollingStationServerTest {
 
     @Test
     public void testVoteSubmission() {
-        (new MockServer(DISTRICT_PORT, Constants.DATA_SIZE)).start(); // create mock server
         String response = pollingStationServer.vote(LOGIN_NAME, CANDIDATE);
 
         assertTrue("", response.contains(LOGIN_NAME));
