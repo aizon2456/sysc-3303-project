@@ -1,6 +1,6 @@
 package pollingStation;
 
-public class Launcher implements Runnable {
+public class PollingStationLauncher implements Runnable {
 
     private String districtServerAddress;
     private int districtServerPort;
@@ -17,10 +17,10 @@ public class Launcher implements Runnable {
             return;
         }
 
-        (new Thread(new Launcher(args[0], Integer.parseInt(args[1])))).start();
+        (new Thread(new PollingStationLauncher(args[0], Integer.parseInt(args[1])))).start();
     }
 
-    public Launcher(String address, int port) {
+    public PollingStationLauncher(String address, int port) {
         districtServerAddress = address;
         districtServerPort = port;
     }

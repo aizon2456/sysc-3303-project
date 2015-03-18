@@ -13,7 +13,7 @@ import java.net.SocketException;
 
 public class PollingStationConnection {
 
-	private DatagramSocket aSocket;
+	private DatagramSocket socket;
     private int districtServerPort;
     private String districtServerAddress;
 
@@ -22,33 +22,37 @@ public class PollingStationConnection {
         this.districtServerPort = districtServerPort;
 
 		System.out.println("Starting Polling Station...");
-		aSocket	= null;
-
-		try {
-			aSocket = new DatagramSocket();
-		} catch (SocketException e) {
-			System.out.println("Socket Error: " + e.getMessage());
-            System.exit(1);
-		}
-
+		socket = null;
+        openSocket();
 	}
 
+    public void openSocket() {
+
+        try {
+            socket = new DatagramSocket();
+        } catch (SocketException e) {
+            System.out.println("Socket Error: " + e.getMessage());
+            System.exit(1);
+        }
+    }
+
+
     public void closeSocket() {
-        if (aSocket != null)
-            aSocket.close();
+        if (socket != null)
+            socket.close();
     }
 	
     /**
      * This method takes the portion of the string to send to the server
      * and packages it into the packet. It then sends the packet to the
      * Impairment Server.
-     * @param bytes: message to be sent
+     * @param message: message to be sent
      */
-	public String sendMessage(String bytes) {
+	public String sendMessage(String message) {
 
 		byte[] outPacket;
 		byte[] send; //this address
-		byte[] data = bytes.getBytes();
+		byte[] data = message.getBytes();
 
         try {
             InetAddress destinationAddress 	= InetAddress.getByName(districtServerAddress);
@@ -68,11 +72,11 @@ public class PollingStationConnection {
             outPacket = byteStream.toByteArray();
             DatagramPacket request = new DatagramPacket(outPacket, outPacket.length,
                                             destinationAddress, districtServerPort);
-            aSocket.setSoTimeout(1000);
-            aSocket.send(request);
+            socket.setSoTimeout(1000);
+            socket.send(request);
             byte[] buffer = new byte[Constants.DATA_SIZE];
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-            aSocket.receive(reply);
+            socket.receive(reply);
 
             return new String(reply.getData());
 

@@ -7,7 +7,6 @@ import java.util.Observable;
 public class PollingStationServer extends Observable {
 
     private String delimiter = String.valueOf(Constants.PACKET_DELIMITER);
-    private char endMessage = Constants.PACKET_END;
     private PollingStationConnection stationConnection;
 
     public PollingStationServer(String districtServerAddress, int districtServerPort) {
@@ -24,7 +23,7 @@ public class PollingStationServer extends Observable {
      */
     public String register(String firstName, String lastName, String sin, String login, String password) {
         String response = stationConnection.sendMessage(Constants.packetType.REGISTER + delimiter + firstName + delimiter
-                + lastName + delimiter + sin + delimiter + login + delimiter + password + endMessage);
+                + lastName + delimiter + sin + delimiter + login + delimiter + password + Constants.PACKET_END);
 
         updateObservers(response);
         return response;
@@ -37,7 +36,7 @@ public class PollingStationServer extends Observable {
      */
     public String login(String login, String password) {
         String response = stationConnection.sendMessage(Constants.packetType.LOGIN + delimiter + login + delimiter
-                + password + endMessage);
+                + password + Constants.PACKET_END);
 
         notifyObservers(response);
         return response;
@@ -48,7 +47,7 @@ public class PollingStationServer extends Observable {
      */
     public String vote(String login, String candidateSIN) {
         String response = stationConnection.sendMessage(Constants.packetType.VOTE + delimiter + login + delimiter
-                + candidateSIN + endMessage);
+                + candidateSIN + Constants.PACKET_END);
 
         notifyObservers(response);
         return response;

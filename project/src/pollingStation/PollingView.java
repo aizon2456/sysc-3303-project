@@ -1,12 +1,13 @@
 package pollingStation;
 
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
 public class PollingView implements Observer {
 
 
-    public void addController(PollingController controller) {
+    public void addController(ActionListener controller) {
         // add controllers to buttons and fields
     }
 
