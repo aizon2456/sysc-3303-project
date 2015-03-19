@@ -22,13 +22,11 @@ public class DistrictServerTest {
 	private ArrayList<Candidate> candidates;
 	private final String login1 = "login1";
 	private final String login2 = "login2";
-	private final String login3 = "login3";
 	private final String password = "password";
 	
 	@Before
 	public void setUp() throws Exception {
 		districtServer = new DistrictServer("Brant", 2000, 3000, "127.0.0.1");
-		districtServer.start();
 		voters = districtServer.getVoters();
 		candidates = districtServer.getCandidates();
 	}
@@ -65,7 +63,7 @@ public class DistrictServerTest {
 		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 													+ delimiter + "TotallyFakeName"
 													+ delimiter + voter.getSocialInsuranceNumber()
-													+ delimiter + login3
+													+ delimiter + login2
 													+ delimiter + password;
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
