@@ -139,13 +139,13 @@ public class PollingView implements Observer {
 
         if(arg==Constants.returnCodes.SUCCESS){
 
-        } else if(arg==Constants.returnCodes.NON_EXISTENT){
+        } else if(arg == Constants.returnCodes.NON_EXISTENT){
 
-        } else if(arg==Constants.returnCodes.ALREADY_REGISTERED){
+        } else if(arg == Constants.returnCodes.ALREADY_REGISTERED){
 
-        } else if(arg==Constants.returnCodes.WRONG_CREDENTIALS){
+        } else if(arg == Constants.returnCodes.WRONG_CREDENTIALS){
 
-        } else if(arg==Constants.returnCodes.ALREADY_VOTED) {
+        } else if(arg == Constants.returnCodes.ALREADY_VOTED) {
 
         } else if (arg == Constants.packetType.NO_RESPONSE) {
             System.out.println("NO RESPONSE");

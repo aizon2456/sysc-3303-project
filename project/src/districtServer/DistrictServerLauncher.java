@@ -10,7 +10,10 @@ public class DistrictServerLauncher {
 //            public void run() {                                           
 //            	new DistrictServer();
 //            }
-//        });  
-		new DistrictServer(args);
+//        });
+        if (args.length < 3) {
+            new DistrictServer(new String[] {"Burlington", "2015", "2015"});
+        } else
+		    new DistrictServer(args);
 	}
 }

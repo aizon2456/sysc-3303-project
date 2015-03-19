@@ -1,12 +1,13 @@
 package districtServer;
+
+import constants.Constants;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
-import constants.Constants;
 
 
 /**
@@ -50,7 +51,7 @@ public class DistrictServer {
 		    try {  
 
 		        // This block configure the logger with handler and formatter  
-		    	String logLocation = System.getProperty("user.dir") + "\\" + logName + ".log";
+		    	String logLocation = System.getProperty("user.dir") + System.getProperty("file.separator") + logName + ".log";
 		    	System.out.println(logLocation);
 		        fh = new FileHandler(logLocation);  
 		        LOGGER.addHandler(fh);
@@ -74,8 +75,7 @@ public class DistrictServer {
 	public Constants.returnCodes parsePacketDataAndPerformCorresspondingAction(byte[] packetData){
 		
 		String request = new String(packetData);
-		String delimiter = Constants.PACKET_DELIMITER;
-		String[] packetDataInformation = request.split(delimiter);
+		String[] packetDataInformation = request.split(Constants.PACKET_DELIMITER);
 		String firstName = null, lastName = null, sin = null, login = null, password = null;
 		Constants.returnCodes status = null;
 		

@@ -49,7 +49,12 @@ public class DistrictServerConnection {
 		DatagramSocket aSocket = null;
 		try {
 			aSocket = new DatagramSocket(districtServerPort);
-			byte[] buffer = new byte[Constants.PACKET_SIZE];
+//			byte[] buffer = new byte[Constants.PACKET_SIZE];
+			byte[] buffer;
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            byteStream.write(returnCode.name().getBytes());
+            buffer = byteStream.toByteArray();
+//			byte[] buffer = returnCode.toBute;
 
 			DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
 			aSocket.send(response);
