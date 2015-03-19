@@ -4,12 +4,12 @@ import constants.Constants;
 
 import java.util.Observable;
 
-public class PollingStationServer extends Observable {
+public class PollingStation extends Observable {
 
     private String delimiter = String.valueOf(Constants.PACKET_DELIMITER);
     private PollingStationConnection stationConnection;
 
-    public PollingStationServer(String districtServerAddress, int districtServerPort) {
+    public PollingStation(String districtServerAddress, int districtServerPort) {
         stationConnection = new PollingStationConnection(districtServerAddress, districtServerPort);
     }
 
