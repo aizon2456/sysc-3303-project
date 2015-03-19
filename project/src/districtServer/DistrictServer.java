@@ -17,7 +17,7 @@ import constants.Constants;
  * @author Nikola Neskovic (100858043), Ian Wong, Kevin Rosengren (100848909), Jonathon Penny
  * @since March 17th 2015
  */
-public class DistrictServer {
+public class DistrictServer extends Thread{
 
 	private String districtName, centralServerIP;
 	private int districtServerPort, centralServerPort;
@@ -32,12 +32,15 @@ public class DistrictServer {
 		this.districtServerPort = districtServerPort;
 		this.centralServerPort = centralServerPort;
 		this.centralServerIP = centralServerIP;
-		
+
 		setUpFileLogger(districtName);
 		buildVoterCandidateList(districtName);
 		districtServerConnection = new DistrictServerConnection(districtServerPort);
-		byte[] packetData;
+	}
 
+	@Override
+	public void run(){
+		byte[] packetData;
 		while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
@@ -98,13 +101,11 @@ public class DistrictServer {
 	 * @return The result of the operation based on the contents of the packet. 
 	 */
 	public Constants.returnCodes parsePacketDataAndPerformCorresspondingAction(byte[] packetData){
-
 		String request = new String(packetData);
 		String delimiter = Constants.PACKET_DELIMITER;
 		String[] packetDataInformation = request.split(delimiter);
 		String firstName = null, lastName = null, sin = null, login = null, password = null;
 		Constants.returnCodes status = null;
-
 		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
 			LOGGER.info("REGISTER packet received");
 			firstName = packetDataInformation[1];
@@ -123,6 +124,8 @@ public class DistrictServer {
 			login = packetDataInformation[1];
 			sin = packetDataInformation[2];
 			status = vote(login, sin);
+		}else{
+			LOGGER.severe("INCORRECT PACKET FORMAT");
 		}
 		return status;
 	}
@@ -144,23 +147,23 @@ public class DistrictServer {
 		}
 
 		Voter voter = new Voter(firstName, lastName, sin, districtName);
-		if(voters.contains(voter)){
-			for(int i = 0; i < voters.size(); i++){
-				if(voter.equals(voters.get(i))){
-					voter = voters.get(i);
-					if(voter.getLoginName() != "" || voter.getPassword() != ""){
-						LOGGER.warning(firstName + " " + lastName + " is already registered.");
-						return Constants.returnCodes.ALREADY_REGISTERED;
-					}
-					voter.setLoginName(login);
-					voter.setPassword(password);
-					break;
+		for(int i = 0; i < voters.size(); i++){
+			if(voter.equals(voters.get(i))){
+				voter = voters.get(i);
+				if(voter.getLoginName() != "" || voter.getPassword() != ""){
+					LOGGER.warning(firstName + " " + lastName + " is already registered.");
+					return Constants.returnCodes.ALREADY_REGISTERED;
 				}
+				voter.setLoginName(login);
+				voter.setPassword(password);
+				break;
+			}else if(i == voters.size() -1){
+				LOGGER.warning(voter.toString() + " does not exist.");
+				return Constants.returnCodes.NON_EXISTENT;
 			}
-		}else {
-			LOGGER.warning(voter.toString() + " does not exist.");
-			return Constants.returnCodes.NON_EXISTENT;
+
 		}
+		
 		LOGGER.info(voter.toString() + " has been successfully registered.");
 		return Constants.returnCodes.SUCCESS;
 	}
@@ -233,5 +236,13 @@ public class DistrictServer {
 		candidates = fileInfoReader.buildCandidateList(districtServerName);
 		LOGGER.info("List of candidates generated");
 		LOGGER.info("Number of candidates " + candidates.size());
+	}
+
+	public ArrayList<Voter> getVoters() {
+		return voters;
+	}
+
+	public ArrayList<Candidate> getCandidates() {
+		return candidates;
 	}
 }

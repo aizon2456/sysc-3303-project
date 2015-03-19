@@ -79,12 +79,18 @@ public class Voter extends Person {
 		else return false;
 
 		//Compares ALL of the attributes of Voter to ensure the two are entirely equal.
-		if(!(this.socialInsuranceNumber.equals(voter.getSocialInsuranceNumber())))
+		if(!(this.socialInsuranceNumber.equals(voter.getSocialInsuranceNumber()))){
 			return false;
-		if(!(this.firstName == voter.getFirstName()))
+		}
+			
+		if(!(this.firstName.equals(voter.getFirstName()))){
 			return false;
-		if(!(this.lastName == voter.getLastName()))
+		}
+
+		if(!(this.lastName.equals(voter.getLastName()))){
 			return false;
+		}
+			
 
 		return true;
 	}

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 public class DistrictServerConnectionTest {
 	
+	private MockServer mockServer;
+	
 	@Before
 	public void setUp() throws Exception {
 
