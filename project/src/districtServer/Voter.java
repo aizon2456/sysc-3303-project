@@ -68,6 +68,10 @@ public class Voter extends Person {
 		this.voted = voted;
 	}
 	
+	public String toString(){
+		return "Name: " + firstName + " " + lastName + ", SIN: " + socialInsuranceNumber + ", District: " + district;
+	}
+	
 	@Override
 	public boolean equals(Object obj){
 		Voter voter;

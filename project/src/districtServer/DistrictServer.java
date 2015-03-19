@@ -1,5 +1,8 @@
 package districtServer;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -30,56 +33,75 @@ public class DistrictServer {
 		buildVoterCandidateList(commandLineArguments[0]);
 		districtServerConnection = new DistrictServerConnection();
 		byte[] packetData;
-		
+
 		while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
 			packetData = districtServerConnection.beginListening(districtServerPort);
 			LOGGER.info("Received request: " + new String(packetData));
+
 			Constants.returnCodes returnCode = parsePacketDataAndPerformCorresspondingAction(packetData);
 			LOGGER.info("Result of packet: " + returnCode);
+
 			districtServerConnection.send(returnCode, districtServerPort);
 			int port = districtServerConnection.getRequest().getPort();
 			LOGGER.info("Message sent to port: " + port + " at address: " + districtServerConnection.getRequest().getAddress());
+
 		}
 	}
 
-	private void setUpFileLogger(String logName){
-		 FileHandler fh;  
-
-		    try {  
-
-		        // This block configure the logger with handler and formatter  
-		    	String logLocation = System.getProperty("user.dir") + "\\" + logName + ".log";
-		    	System.out.println(logLocation);
-		        fh = new FileHandler(logLocation);  
-		        LOGGER.addHandler(fh);
-		        SimpleFormatter formatter = new SimpleFormatter();  
-		        fh.setFormatter(formatter);  
-
-		    } catch (SecurityException e) {  
-		        e.printStackTrace();  
-		    } catch (IOException e) {  
-		        e.printStackTrace();  
-		    }  
-		    LOGGER.setLevel(Level.INFO);
-		    LOGGER.info("Logger initialized");  
+	private void printCandidateStatusesToFile(){
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(districtName + "_candidate_statuses.txt", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		writer.println("Candidates:");
+		for(Candidate candidate : candidates){
+			writer.println(candidate.toString());
+		}
+		writer.close();
 	}
-	
+
+	private void setUpFileLogger(String logName){
+		FileHandler fh;  
+
+		try {  
+
+			// This block configure the logger with handler and formatter  
+			String logLocation = System.getProperty("user.dir") + "\\" + logName + ".log";
+			System.out.println(logLocation);
+			fh = new FileHandler(logLocation);  
+			LOGGER.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();  
+			fh.setFormatter(formatter);  
+
+		} catch (SecurityException e) {  
+			e.printStackTrace();  
+		} catch (IOException e) {  
+			e.printStackTrace();  
+		}  
+		LOGGER.setLevel(Level.INFO);
+		LOGGER.info("Logger initialized");  
+	}
+
 	/**
 	 * Parses the packet data to determine what the user is requesting.
 	 * @param packetData
 	 * @return The result of the operation based on the contents of the packet. 
 	 */
 	public Constants.returnCodes parsePacketDataAndPerformCorresspondingAction(byte[] packetData){
-		
+
 		String request = new String(packetData);
 		String delimiter = Constants.PACKET_DELIMITER;
 		String[] packetDataInformation = request.split(delimiter);
 		String firstName = null, lastName = null, sin = null, login = null, password = null;
 		Constants.returnCodes status = null;
-		
+
 		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
+			LOGGER.info("REGISTER packet received");
 			firstName = packetDataInformation[1];
 			lastName = packetDataInformation[2];
 			sin = packetDataInformation[3];
@@ -87,10 +109,12 @@ public class DistrictServer {
 			password = packetDataInformation[5];
 			status = register(firstName, lastName, sin, login, password);
 		}else if(packetDataInformation[0].equals(Constants.packetType.LOGIN.name())){
+			LOGGER.info("LOGIN packet received");
 			login = packetDataInformation[1];
 			password = packetDataInformation[2];
 			status = loginUser(login, password);
 		}else if(packetDataInformation[0].equals(Constants.packetType.VOTE.name())){
+			LOGGER.info("VOTE packet received");
 			login = packetDataInformation[1];
 			sin = packetDataInformation[2];
 			status = vote(login, sin);
@@ -119,14 +143,20 @@ public class DistrictServer {
 			for(int i = 0; i < voters.size(); i++){
 				if(voter.equals(voters.get(i))){
 					voter = voters.get(i);
-					if(voter.getLoginName() != "" || voter.getPassword() != "")
+					if(voter.getLoginName() != "" || voter.getPassword() != ""){
+						LOGGER.warning(firstName + " " + lastName + " is already registered.");
 						return Constants.returnCodes.ALREADY_REGISTERED;
+					}
 					voter.setLoginName(login);
 					voter.setPassword(password);
 					break;
 				}
 			}
-		}else return Constants.returnCodes.NON_EXISTENT;
+		}else {
+			LOGGER.warning(voter.toString() + " does not exist.");
+			return Constants.returnCodes.NON_EXISTENT;
+		}
+		LOGGER.info(voter.toString() + " has been successfully registered.");
 		return Constants.returnCodes.SUCCESS;
 	}
 
@@ -139,9 +169,12 @@ public class DistrictServer {
 	 */
 	private Constants.returnCodes loginUser(String login,String password){
 		for(int i = 0; i < voters.size(); i++){
-			if(voters.get(i).getLoginName().equals(login) && voters.get(i).getPassword().equals(password))
+			if(voters.get(i).getLoginName().equals(login) && voters.get(i).getPassword().equals(password)){
+				LOGGER.info(login + " has succesfully logged in.");
 				return Constants.returnCodes.SUCCESS;
+			}
 		}
+		LOGGER.warning(login + " has input the wrong credentials.");
 		return Constants.returnCodes.WRONG_CREDENTIALS;
 	}
 
@@ -163,11 +196,16 @@ public class DistrictServer {
 			if(voters.get(i).getLoginName().equals(login))
 				voter = voters.get(i);
 		}
-		if(voter.hasVoted())
+		if(voter.hasVoted()){
+			LOGGER.warning(login + " has already voted.");
 			return Constants.returnCodes.ALREADY_VOTED;
-		
+		}
 		candidate.incrementNumVotes();
 		voter.setVoted(true);
+
+		printCandidateStatusesToFile();
+		LOGGER.info("Vote successful! Candidate statuses file updated.");
+
 		return Constants.returnCodes.SUCCESS;
 	}
 
@@ -241,7 +279,7 @@ public class DistrictServer {
 		voters = fileInfoReader.buildVoterList(districtServerName);
 		LOGGER.info("List of voters generated.");
 		LOGGER.info("Number of voters: " + voters.size());
-		
+
 		candidates = fileInfoReader.buildCandidateList(districtServerName);
 		LOGGER.info("List of candidates generated");
 		LOGGER.info("Number of candidates " + candidates.size());

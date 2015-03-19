@@ -32,4 +32,8 @@ public class Candidate extends Person{
 		
 		return true;
 	}
+	
+	public String toString(){
+		return "Name: " + firstName + " " + lastName + ", SIN: " + socialInsuranceNumber + ", Votes: " + numVotes;
+	}
 }
