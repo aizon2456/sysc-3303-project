@@ -35,23 +35,24 @@ public class DistrictServer {
 		
 		setUpFileLogger(districtName);
 		buildVoterCandidateList(districtName);
-		districtServerConnection = new DistrictServerConnection();
+		districtServerConnection = new DistrictServerConnection(districtServerPort);
 		byte[] packetData;
 
 		while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
-			packetData = districtServerConnection.beginListening(districtServerPort);
+			packetData = districtServerConnection.beginListening();
 			LOGGER.info("Received request: " + new String(packetData));
 
 			Constants.returnCodes returnCode = parsePacketDataAndPerformCorresspondingAction(packetData);
 			LOGGER.info("Result of packet: " + returnCode);
 
-			districtServerConnection.send(returnCode, districtServerPort);
+			districtServerConnection.send(returnCode);
 			int port = districtServerConnection.getRequest().getPort();
 			LOGGER.info("Message sent to port: " + port + " at address: " + districtServerConnection.getRequest().getAddress());
 
 		}
+		//districtServerConnection.kill();
 	}
 
 	private void printCandidateStatusesToFile(){
