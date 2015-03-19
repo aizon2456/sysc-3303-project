@@ -26,11 +26,15 @@ public class DistrictServer {
 	private DistrictServerConnection districtServerConnection;
 	private final static Logger LOGGER = Logger.getLogger(DistrictServer.class.getName()); 
 
-	public DistrictServer(String[] commandLineArguments){
+	public DistrictServer(String districtName, int districtServerPort, int centralServerPort, String centralServerIP){
 
-		setUpFileLogger(commandLineArguments[0]);
-		validateCommandLineArguments(commandLineArguments);
-		buildVoterCandidateList(commandLineArguments[0]);
+		this.districtName = districtName;
+		this.districtServerPort = districtServerPort;
+		this.centralServerPort = centralServerPort;
+		this.centralServerIP = centralServerIP;
+		
+		setUpFileLogger(districtName);
+		buildVoterCandidateList(districtName);
 		districtServerConnection = new DistrictServerConnection();
 		byte[] packetData;
 
@@ -210,61 +214,6 @@ public class DistrictServer {
 	}
 
 	/**
-	 * Validates all of the command line arguments to ensure they are all valid variables.
-	 * @param commandLineArguments The arguments given at runtime for the districtServer
-	 */
-	private void validateCommandLineArguments(String[] commandLineArguments){
-		if(commandLineArguments.length < 3){
-			System.out.println("Invalid number of arguments!");
-			LOGGER.severe("Invalid number of arguments!");
-			printUsageInstructions();
-			System.exit(1);
-		}
-
-		try{districtServerPort = Integer.parseInt(commandLineArguments[1].trim());}
-		catch(NumberFormatException e){
-			System.out.println("Invalid district port format! " + commandLineArguments[1].trim());
-			LOGGER.severe("Invalid district port format! " + commandLineArguments[1].trim());
-			printUsageInstructions();
-			System.exit(1);
-		}
-
-		if(districtServerPort <= 1024 || districtServerPort >= 65536){
-			System.out.println("Invalid district port number! " + districtServerPort);
-			LOGGER.severe("Invalid district port number! " + districtServerPort);
-			printUsageInstructions();
-			System.exit(1);
-		}
-
-		try{centralServerPort = Integer.parseInt(commandLineArguments[2].trim());}
-		catch(NumberFormatException e){
-			System.out.println("Invalid central port format! " + commandLineArguments[2].trim());
-			LOGGER.severe("Invalid central port format! " + commandLineArguments[2].trim());
-			printUsageInstructions();
-			System.exit(1);
-		}
-
-		if(centralServerPort <= 1024 || centralServerPort >= 65536){
-			System.out.println("Invalid central port number! " + centralServerPort);
-			LOGGER.severe("Invalid central port number! " + centralServerPort);
-			printUsageInstructions();
-			System.exit(1);
-		}
-
-		try{
-			centralServerIP = commandLineArguments[3];
-
-			if(!centralServerIP.matches(Constants.IPV4_REGEX)){
-				System.out.println("Invalid central server IP address! " + centralServerIP);
-				LOGGER.severe("Invalid central server IP address! " + centralServerIP);
-				printUsageInstructions();
-				System.exit(1);
-			}
-		}
-		catch(IndexOutOfBoundsException e){LOGGER.warning("No central server IP specified");centralServerIP = "127.0.0.1";}
-	}
-
-	/**
 	 * Based on the correct districtName the voter and candidate lists will be populated based on districts.
 	 * i.e. only candidates belong to Burlington district will be stored by the Burlington district server.
 	 * The name is specified at the launching of the district server class.
@@ -284,9 +233,4 @@ public class DistrictServer {
 		LOGGER.info("List of candidates generated");
 		LOGGER.info("Number of candidates " + candidates.size());
 	}
-
-	private void printUsageInstructions(){
-		System.out.println("Usage: \" java DistrictServerLauncher.java <districtName> <districtServerPort >= 1025> <centralServerPort >= 1025> [<centralServerIP>]");
-	}
-
 }
