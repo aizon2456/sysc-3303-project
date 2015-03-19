@@ -3,11 +3,11 @@ package tests;
 import constants.Constants;
 import org.junit.Before;
 import org.junit.Test;
-import pollingStation.PollingStationServer;
+import pollingStation.PollingStation;
 
 import static org.junit.Assert.assertTrue;
 
-public class PollingStationServerTest {
+public class PollingStationTest {
 
     private static final String DISTRICT_SERVER_ADDRESS = "127.0.0.1";
     private static final int DISTRICT_PORT = 2015;
@@ -20,11 +20,11 @@ public class PollingStationServerTest {
     private static final String CANDIDATE   = "987 654 321";
 
 
-    private PollingStationServer pollingStationServer;
+    private PollingStation pollingStationServer;
 
     @Before
     public void setup() {
-        pollingStationServer = new PollingStationServer(DISTRICT_SERVER_ADDRESS, DISTRICT_PORT);
+        pollingStationServer = new PollingStation(DISTRICT_SERVER_ADDRESS, DISTRICT_PORT);
         (new MockServer(DISTRICT_PORT, Constants.PACKET_SIZE)).start(); // create mock server
     }
 

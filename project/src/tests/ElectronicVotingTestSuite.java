@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
         PollingStationConnectionTest.class,
-        PollingStationServerTest.class,
+        PollingStationTest.class,
         VoterTest.class,
         CandidateTest.class
 })

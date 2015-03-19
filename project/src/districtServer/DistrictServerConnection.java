@@ -1,8 +1,12 @@
 package districtServer;
 
-import java.net.*;
-import java.io.*;
 import constants.Constants;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class DistrictServerConnection {
 
@@ -15,9 +19,7 @@ public class DistrictServerConnection {
 	 * it receives, corrupts them a little then forwards it to the main server.
 	 * The response from the main server is forwarded to the client
 	 * @param districtServerPort which is the Client port
-	 * @param centralServerPort which is the Main Server's port
-	 * @param centralIP which is the Main Server's host IP Address
-	 * @return
+	 * @return data in packet
 	 */
 	public byte[] beginListening(int districtServerPort){
 		DatagramSocket aSocket = null;
@@ -49,12 +51,12 @@ public class DistrictServerConnection {
 		DatagramSocket aSocket = null;
 		try {
 			aSocket = new DatagramSocket(districtServerPort);
-//			byte[] buffer = new byte[Constants.PACKET_SIZE];
+
 			byte[] buffer;
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             byteStream.write(returnCode.name().getBytes());
+            byteStream.write(Constants.PACKET_END);
             buffer = byteStream.toByteArray();
-//			byte[] buffer = returnCode.toBute;
 
 			DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
 			aSocket.send(response);

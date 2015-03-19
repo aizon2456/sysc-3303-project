@@ -27,7 +27,7 @@ public class PollingStationLauncher implements Runnable {
 
     @Override
     public void run() {
-        PollingStationServer server = new PollingStationServer(districtServerAddress, districtServerPort);
+        PollingStation server = new PollingStation(districtServerAddress, districtServerPort);
         PollingView view = new PollingView(false, new String[] {});
         PollingController controller = new PollingController();
 

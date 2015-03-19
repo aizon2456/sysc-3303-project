@@ -17,8 +17,8 @@ import java.util.logging.SimpleFormatter;
  */
 public class DistrictServer {
 
-	private String districtName, centralServerIP;
-	private int districtServerPort, centralServerPort;
+	private String districtName;
+    private int districtServerPort, centralServerPort;
 	private ArrayList<Voter> voters;
 	private ArrayList<Candidate> candidates;
 	private DistrictServerConnection districtServerConnection;
@@ -109,23 +109,23 @@ public class DistrictServer {
 	 * user is already registered or if the user does not exist.
 	 */
 	private Constants.returnCodes register(String firstName, String lastName, String sin, String login, String password){
-		for(int i = 0; i < voters.size(); i++){
-			if(voters.get(i).getLoginName().equals(login))
-				return Constants.returnCodes.LOGIN_EXISTS;
-		}
+        for (Voter voter2 : voters) {
+            if (voter2.getLoginName().equals(login))
+                return Constants.returnCodes.LOGIN_EXISTS;
+        }
 
 		Voter voter = new Voter(firstName, lastName, sin, districtName);
 		if(voters.contains(voter)){
-			for(int i = 0; i < voters.size(); i++){
-				if(voter.equals(voters.get(i))){
-					voter = voters.get(i);
-					if(voter.getLoginName() != "" || voter.getPassword() != "")
-						return Constants.returnCodes.ALREADY_REGISTERED;
-					voter.setLoginName(login);
-					voter.setPassword(password);
-					break;
-				}
-			}
+            for (Voter voter1 : voters) {
+                if (voter.equals(voter1)) {
+                    voter = voter1;
+                    if (!voter.getLoginName().equals("") || !voter.getPassword().equals(""))
+                        return Constants.returnCodes.ALREADY_REGISTERED;
+                    voter.setLoginName(login);
+                    voter.setPassword(password);
+                    break;
+                }
+            }
 		}else return Constants.returnCodes.NON_EXISTENT;
 		return Constants.returnCodes.SUCCESS;
 	}
@@ -138,10 +138,10 @@ public class DistrictServer {
 	 * will return WRONG_CREDENTIALS, otherwise it will return succes. 
 	 */
 	private Constants.returnCodes loginUser(String login,String password){
-		for(int i = 0; i < voters.size(); i++){
-			if(voters.get(i).getLoginName().equals(login) && voters.get(i).getPassword().equals(password))
-				return Constants.returnCodes.SUCCESS;
-		}
+        for (Voter voter : voters) {
+            if (voter.getLoginName().equals(login) && voter.getPassword().equals(password))
+                return Constants.returnCodes.SUCCESS;
+        }
 		return Constants.returnCodes.WRONG_CREDENTIALS;
 	}
 
@@ -155,19 +155,24 @@ public class DistrictServer {
 	private Constants.returnCodes vote(String login, String sin){
 		Candidate candidate = null;
 		Voter voter = null;
-		for(int i = 0; i < candidates.size(); i++){
-			if(candidates.get(i).getSocialInsuranceNumber().equals(sin))
-				candidate = candidates.get(i);
-		}
-		for(int i = 0; i < voters.size(); i++){
-			if(voters.get(i).getLoginName().equals(login))
-				voter = voters.get(i);
-		}
-		if(voter.hasVoted())
-			return Constants.returnCodes.ALREADY_VOTED;
-		
-		candidate.incrementNumVotes();
-		voter.setVoted(true);
+        for (Candidate candidate1 : candidates) {
+            if (candidate1.getSocialInsuranceNumber().equals(sin))
+                candidate = candidate1;
+        }
+        for (Voter voter1 : voters) {
+            if (voter1.getLoginName().equals(login))
+                voter = voter1;
+        }
+
+        if (voter != null)
+	    	if(voter.hasVoted())
+		    	return Constants.returnCodes.ALREADY_VOTED;
+
+        if (candidate != null)
+		    candidate.incrementNumVotes();
+
+        if (voter != null)
+            voter.setVoted(true);
 		return Constants.returnCodes.SUCCESS;
 	}
 
@@ -213,7 +218,8 @@ public class DistrictServer {
 			System.exit(1);
 		}
 
-		try{
+        String centralServerIP;
+        try{
 			centralServerIP = commandLineArguments[3];
 
 			if(!centralServerIP.matches(Constants.IPV4_REGEX)){
@@ -222,8 +228,10 @@ public class DistrictServer {
 				printUsageInstructions();
 				System.exit(1);
 			}
-		}
-		catch(IndexOutOfBoundsException e){LOGGER.warning("No central server IP specified");centralServerIP = "127.0.0.1";}
+		} catch(IndexOutOfBoundsException e) {
+            LOGGER.warning("No central server IP specified");
+            centralServerIP = "127.0.0.1";
+        }
 	}
 
 	/**

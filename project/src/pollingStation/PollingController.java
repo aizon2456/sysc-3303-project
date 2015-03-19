@@ -8,14 +8,14 @@ public class PollingController implements ActionListener {
     private static final int USERNAME = 0;
     private static final int PASSWORD = 1;
 
-    private PollingStationServer model;
+    private PollingStation model;
     private PollingView view;
 
     public PollingController() {
 
     }
 
-    public void addModel(PollingStationServer model) {
+    public void addModel(PollingStation model) {
         this.model = model;
     }
 
