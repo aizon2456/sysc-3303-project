@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import pollingStation.PollingStation;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PollingStationTest {
 
@@ -66,9 +66,11 @@ public class PollingStationTest {
         String response = pollingStationServer.voteFor(CANDIDATE);
 
         System.out.println("LOGIN: " + response);
-        assertTrue("", response.contains(LOGIN_NAME));
-        assertTrue("", response.contains(CANDIDATE));
+        assertFalse("", response.contains(LOGIN_NAME));
+        assertFalse("", response.contains(CANDIDATE));
     }
+
+
 
     @Test
     public void testVoteInvalidSubmission() {

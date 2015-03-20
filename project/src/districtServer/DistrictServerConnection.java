@@ -5,6 +5,7 @@ import constants.Constants;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 
 public class DistrictServerConnection {
@@ -63,6 +64,31 @@ public class DistrictServerConnection {
             aSocket.send(response);
             aSocket.close();
 
+
+		} catch (SocketException e) {
+			System.out.println("Socket Error: " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO Error: " + e.getMessage());
+		} 
+	}
+	
+	/**
+	 * Sends the result of the previous request back to a specified port/address.
+	 * @param returnCode the result of the most recent request
+	 */
+	public void send(String returnCode, InetAddress address, int port){
+		try {
+			try {
+				DatagramSocket aSocket = new DatagramSocket();
+				byte[] buffer = (returnCode).getBytes();
+				
+				System.out.println(address + " "  + port);
+				DatagramPacket response = new DatagramPacket(buffer, buffer.length, address, port);
+				aSocket.send(response);
+				aSocket.close();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			};
 
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());

@@ -108,26 +108,30 @@ public class DistrictServer extends Thread{
 		String firstName = null, lastName = null, sin = null, login = null, password = null;
 		String status = null;
 
-		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
-			LOGGER.info("REGISTER packet received");
-			firstName = packetDataInformation[1];
-			lastName = packetDataInformation[2];
-			sin = packetDataInformation[3];
-			login = packetDataInformation[4];
-			password = packetDataInformation[5];
-			status = register(firstName, lastName, sin, login, password);
-		}else if(packetDataInformation[0].equals(Constants.packetType.LOGIN.name())){
-			LOGGER.info("LOGIN packet received");
-			login = packetDataInformation[1];
-			password = packetDataInformation[2];
-			status = loginUser(login, password);
-		}else if(packetDataInformation[0].equals(Constants.packetType.VOTE.name())){
-			LOGGER.info("VOTE packet received");
-			login = packetDataInformation[1];
-			sin = packetDataInformation[2];
-			status = vote(login, sin);
-		}else{
-			LOGGER.severe("INCORRECT PACKET FORMAT");
+		try{
+			if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
+				LOGGER.info("REGISTER packet received");
+				firstName = packetDataInformation[1];
+				lastName = packetDataInformation[2];
+				sin = packetDataInformation[3];
+				login = packetDataInformation[4];
+				password = packetDataInformation[5];
+				status = register(firstName, lastName, sin, login, password);
+			}else if(packetDataInformation[0].equals(Constants.packetType.LOGIN.name())){
+				LOGGER.info("LOGIN packet received");
+				login = packetDataInformation[1];
+				password = packetDataInformation[2];
+				status = loginUser(login, password);
+			}else if(packetDataInformation[0].equals(Constants.packetType.VOTE.name())){
+				LOGGER.info("VOTE packet received");
+				login = packetDataInformation[1];
+				sin = packetDataInformation[2];
+				status = vote(login, sin);
+			}else{
+				LOGGER.severe("INCORRECT PACKET FORMAT");
+			}
+		}catch(ArrayIndexOutOfBoundsException e){
+			return Constants.returnCodes.INVALID_NUM_ARGUMENTS.name();
 		}
 		return status;
 	}

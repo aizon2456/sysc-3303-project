@@ -1,17 +1,16 @@
 package tests;
 
-import java.util.ArrayList;
-
+import constants.Constants;
 import districtServer.Candidate;
 import districtServer.DistrictServer;
 import districtServer.Voter;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.Constants;
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
 
 public class DistrictServerTest {
 
@@ -96,6 +95,15 @@ public class DistrictServerTest {
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
 		
 		assertEquals(test, Constants.returnCodes.ALREADY_VOTED.name());
+		
+		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
+													+ delimiter + voter.getLastName()
+													+ delimiter + voter.getSocialInsuranceNumber()
+													+ delimiter + password;
+		
+		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
+		
+		assertEquals(test, Constants.returnCodes.INVALID_NUM_ARGUMENTS.name());
 	}
 	
 	@After
