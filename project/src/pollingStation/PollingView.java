@@ -192,6 +192,10 @@ public class PollingView implements Observer {
             displayMessage("Login name is already in use");
         } else if (arguments[0].equals(Constants.packetType.NO_RESPONSE.name())) {
             System.out.println("NO RESPONSE");
+            displayMessage("No response, please try again.");
+        } else if (arguments[0].equals(Constants.TEST_COMPLETE)) {
+        	displayMessage("Testing completed, see DistrictServer for detailed log.");
+        	System.out.println(arguments[1]);
         } else {
             System.out.println("Unknown Response: " + Arrays.toString(arguments));
         }

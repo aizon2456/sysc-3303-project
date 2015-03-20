@@ -32,13 +32,13 @@ public class PollingStationLauncher implements Runnable {
                     System.exit(1);
                 }
 
-                String serverAddress = args[1];
+                String serverAddress = args[0];
                 if(!serverAddress.matches(Constants.IPV4_REGEX)){
                     System.out.println("Invalid central server IP address! " + serverAddress);
                     System.exit(1);
                 }
 
-                (new Thread(new PollingStationLauncher(args[0], port))).start();
+                (new Thread(new PollingStationLauncher(serverAddress, port))).start();
             } catch (Exception e) {
                System.out.println("Invalid Port - Must be a number");
             }

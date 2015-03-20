@@ -20,7 +20,6 @@ public class DistrictServerConnection {
 	 * @return data in packet
 	 */
 	public byte[] beginListening(int districtServerPort){
-        System.out.println("GOT HERE");
 		try {
             aSocket = new DatagramSocket(districtServerPort);
             byte[] buffer = new byte[Constants.PACKET_SIZE];
