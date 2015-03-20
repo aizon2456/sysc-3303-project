@@ -5,6 +5,7 @@ import constants.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +41,7 @@ public class DistrictServer extends Thread{
 	@Override
 	public void run(){
 		byte[] packetData;
-        //noinspection InfiniteLoopStatement
+
         while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
@@ -104,7 +105,10 @@ public class DistrictServer extends Thread{
 	 */
 	public Constants.returnCodes parsePacketDataAndPerformCorrespondingAction(byte[] packetData){
 		String request = new String(packetData);
-		String[] packetDataInformation = request.split(Constants.PACKET_DELIMITER);
+        int endOfPacket = request.indexOf(Constants.PACKET_END);
+        if (endOfPacket == -1) endOfPacket = request.length();
+		String[] packetDataInformation = request.substring(0, endOfPacket).split(Constants.PACKET_DELIMITER);
+        System.out.println(Arrays.toString(packetDataInformation));
 		String firstName, lastName, sin, login, password;
 		Constants.returnCodes status = null;
 		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
@@ -117,6 +121,9 @@ public class DistrictServer extends Thread{
 			status = register(firstName, lastName, sin, login, password);
 		}else if(packetDataInformation[0].equals(Constants.packetType.LOGIN.name())){
 			LOGGER.info("LOGIN packet received");
+            if (packetDataInformation.length < 3)
+                return loginUser("-1", "-1");
+
 			login = packetDataInformation[1];
 			password = packetDataInformation[2];
 			status = loginUser(login, password);
@@ -179,6 +186,7 @@ public class DistrictServer extends Thread{
 	 */
 	private Constants.returnCodes loginUser(String login,String password){
 
+        System.out.println("login: " + login + " password: " + password);
         for (Voter voter : voters) {
             if (voter.getLoginName().equals(login) && voter.getPassword().equals(password)) {
                 LOGGER.info(login + " has successfully logged in.");
