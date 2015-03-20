@@ -42,13 +42,13 @@ public class DistrictServerTest {
 														+ delimiter + login1
 														+ delimiter + password;
 		
-		Constants.returnCodes test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
+		String test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(Constants.returnCodes.SUCCESS, test);
+		assertEquals(Constants.returnCodes.SUCCESS.name(), test);
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.LOGIN_EXISTS);
+		assertEquals(test, Constants.returnCodes.LOGIN_EXISTS.name());
 		
 		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 													+ delimiter + voter.getLastName()
@@ -58,7 +58,7 @@ public class DistrictServerTest {
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.ALREADY_REGISTERED);
+		assertEquals(test, Constants.returnCodes.ALREADY_REGISTERED.name());
 
 		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 													+ delimiter + "TotallyFakeName"
@@ -68,21 +68,21 @@ public class DistrictServerTest {
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.NON_EXISTENT);
+		assertEquals(test, Constants.returnCodes.NON_EXISTENT.name());
 		
 		message = Constants.packetType.LOGIN 	+ delimiter + login1 
 												+ delimiter  + password;
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.SUCCESS);
+		assertEquals(test, Constants.returnCodes.SUCCESS.name() + districtServer.getDelimitedCandidates());
 		
 		message = Constants.packetType.LOGIN 	+ delimiter + "TotallyFakeLogin"
 												+ delimiter + password;
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.WRONG_CREDENTIALS);
+		assertEquals(test, Constants.returnCodes.WRONG_CREDENTIALS.name());
 
 		Candidate candidate = candidates.get(0);
 		message = Constants.packetType.VOTE + delimiter + login1
@@ -90,11 +90,11 @@ public class DistrictServerTest {
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.SUCCESS);
+		assertEquals(test, Constants.returnCodes.SUCCESS.name());
 		
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
-		assertEquals(test, Constants.returnCodes.ALREADY_VOTED);
+		assertEquals(test, Constants.returnCodes.ALREADY_VOTED.name());
 	}
 	
 	@After

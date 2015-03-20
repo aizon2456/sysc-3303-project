@@ -8,16 +8,15 @@ import constants.Constants;
 public class DistrictServerConnection {
 
 	private DatagramPacket request;
-	private DatagramSocket aSocket;
 
-	public DistrictServerConnection(int districtServerPort){
-		try {
-			aSocket = new DatagramSocket(districtServerPort);
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		};
-	}
+//	public DistrictServerConnection(int districtServerPort){
+//		try {
+//			aSocket = new DatagramSocket(districtServerPort);
+//		} catch (SocketException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		};
+//	}
 
 	/**
 	 * This function begins the main server listening loop, it takes messages
@@ -28,14 +27,21 @@ public class DistrictServerConnection {
 	 * @param centralIP which is the Main Server's host IP Address
 	 * @return
 	 */
-	public byte[] beginListening(){
+	public byte[] beginListening(int districtServerPort){
 		try {
-			byte[] buffer = new byte[Constants.PACKET_SIZE];
+			DatagramSocket aSocket;
+			try {
+				aSocket = new DatagramSocket(districtServerPort);
+				
+				byte[] buffer = new byte[Constants.PACKET_SIZE];
 
-			request = new DatagramPacket(buffer, buffer.length);
-			aSocket.receive(request);
-			return request.getData();
-
+				request = new DatagramPacket(buffer, buffer.length);
+				aSocket.receive(request);			
+				aSocket.close();
+				return new String(request.getData()).trim().getBytes();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			};
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
 		} catch (IOException e) {
@@ -49,23 +55,24 @@ public class DistrictServerConnection {
 	 * @param returnCode the result of the most recent request
 	 * @param districtServerPort the port that the message is being sent from
 	 */
-	public void send(Constants.returnCodes returnCode){
+	public void send(String returnCode){
 		try {
-			byte[] buffer = new byte[Constants.PACKET_SIZE];
-
-			DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
-			aSocket.send(response);
+			try {
+				DatagramSocket aSocket = new DatagramSocket();
+				byte[] buffer = (returnCode + Constants.PACKET_END).getBytes();
+				
+				DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
+				aSocket.send(response);
+				aSocket.close();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			};
 
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
 		} catch (IOException e) {
 			System.out.println("IO Error: " + e.getMessage());
 		} 
-	}
-
-	public void kill(){
-		if (aSocket != null)
-			aSocket.close();
 	}
 
 	public DatagramPacket getRequest() {

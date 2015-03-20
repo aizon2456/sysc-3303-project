@@ -14,7 +14,7 @@ import constants.Constants;
 
 /**
  * 
- * @author Nikola Neskovic (100858043), Ian Wong, Kevin Rosengren (100848909), Jonathon Penny
+ * @author Nikola Neskovic (100858043), Ian Wong, Kevin Rosengren (100848909), Jonathan Penny (100884228)
  * @since March 17th 2015
  */
 public class DistrictServer extends Thread{
@@ -35,7 +35,7 @@ public class DistrictServer extends Thread{
 
 		setUpFileLogger(districtName);
 		buildVoterCandidateList(districtName);
-		districtServerConnection = new DistrictServerConnection(districtServerPort);
+		districtServerConnection = new DistrictServerConnection();
 	}
 
 	@Override
@@ -44,10 +44,10 @@ public class DistrictServer extends Thread{
 		while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
-			packetData = districtServerConnection.beginListening();
+			packetData = districtServerConnection.beginListening(districtServerPort);
 			LOGGER.info("Received request: " + new String(packetData));
 
-			Constants.returnCodes returnCode = parsePacketDataAndPerformCorresspondingAction(packetData);
+			String returnCode = parsePacketDataAndPerformCorresspondingAction(packetData);
 			LOGGER.info("Result of packet: " + returnCode);
 
 			districtServerConnection.send(returnCode);
@@ -100,12 +100,12 @@ public class DistrictServer extends Thread{
 	 * @param packetData
 	 * @return The result of the operation based on the contents of the packet. 
 	 */
-	public Constants.returnCodes parsePacketDataAndPerformCorresspondingAction(byte[] packetData){
+	public String parsePacketDataAndPerformCorresspondingAction(byte[] packetData){
 		String request = new String(packetData);
 		String delimiter = Constants.PACKET_DELIMITER;
 		String[] packetDataInformation = request.split(delimiter);
 		String firstName = null, lastName = null, sin = null, login = null, password = null;
-		Constants.returnCodes status = null;
+		String status = null;
 		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
 			LOGGER.info("REGISTER packet received");
 			firstName = packetDataInformation[1];
@@ -140,10 +140,10 @@ public class DistrictServer extends Thread{
 	 * @return the result of the register operation. Register will fail if the login name already exits, if the 
 	 * user is already registered or if the user does not exist.
 	 */
-	private Constants.returnCodes register(String firstName, String lastName, String sin, String login, String password){
+	private String register(String firstName, String lastName, String sin, String login, String password){
 		for(int i = 0; i < voters.size(); i++){
 			if(voters.get(i).getLoginName().equals(login))
-				return Constants.returnCodes.LOGIN_EXISTS;
+				return Constants.returnCodes.LOGIN_EXISTS.name();
 		}
 
 		Voter voter = new Voter(firstName, lastName, sin, districtName);
@@ -152,20 +152,20 @@ public class DistrictServer extends Thread{
 				voter = voters.get(i);
 				if(voter.getLoginName() != "" || voter.getPassword() != ""){
 					LOGGER.warning(firstName + " " + lastName + " is already registered.");
-					return Constants.returnCodes.ALREADY_REGISTERED;
+					return Constants.returnCodes.ALREADY_REGISTERED.name();
 				}
 				voter.setLoginName(login);
 				voter.setPassword(password);
 				break;
 			}else if(i == voters.size() -1){
 				LOGGER.warning(voter.toString() + " does not exist.");
-				return Constants.returnCodes.NON_EXISTENT;
+				return Constants.returnCodes.NON_EXISTENT.name();
 			}
 
 		}
 		
 		LOGGER.info(voter.toString() + " has been successfully registered.");
-		return Constants.returnCodes.SUCCESS;
+		return Constants.returnCodes.SUCCESS.name();
 	}
 
 	/**
@@ -175,15 +175,29 @@ public class DistrictServer extends Thread{
 	 * @return return the result of the login operation. If the login credential are incorrect the method
 	 * will return WRONG_CREDENTIALS, otherwise it will return succes. 
 	 */
-	private Constants.returnCodes loginUser(String login,String password){
+	private String loginUser(String login,String password){
 		for(int i = 0; i < voters.size(); i++){
 			if(voters.get(i).getLoginName().equals(login) && voters.get(i).getPassword().equals(password)){
 				LOGGER.info(login + " has succesfully logged in.");
-				return Constants.returnCodes.SUCCESS;
+				return Constants.returnCodes.SUCCESS.name() + getDelimitedCandidates();
 			}
 		}
 		LOGGER.warning(login + " has input the wrong credentials.");
-		return Constants.returnCodes.WRONG_CREDENTIALS;
+		return Constants.returnCodes.WRONG_CREDENTIALS.name();
+	}
+	
+	/**
+	 * Returns a string for the return send packet
+	 * @return The string of candidates delimited by a constant character
+	 */
+	public String getDelimitedCandidates() {
+		String result = "";
+		for (int i = 0; i < candidates.size(); i++) {
+			result += Constants.PACKET_DELIMITER + candidates.get(i).getFirstName() + 
+					" " + candidates.get(i).getLastName() + Constants.PACKET_DELIMITER
+					+ candidates.get(i).getSocialInsuranceNumber();
+		}
+		return result;
 	}
 
 	/**
@@ -193,7 +207,7 @@ public class DistrictServer extends Thread{
 	 * @return return the result of the vote operation. If a user has already voted the ALREADY_VOTED enum
 	 * will be return. Otherwise the SUCCESS enum will be return.
 	 */
-	private Constants.returnCodes vote(String login, String sin){
+	private String vote(String login, String sin){
 		Candidate candidate = null;
 		Voter voter = null;
 		for(int i = 0; i < candidates.size(); i++){
@@ -206,7 +220,7 @@ public class DistrictServer extends Thread{
 		}
 		if(voter.hasVoted()){
 			LOGGER.warning(login + " has already voted.");
-			return Constants.returnCodes.ALREADY_VOTED;
+			return Constants.returnCodes.ALREADY_VOTED.name();
 		}
 		candidate.incrementNumVotes();
 		voter.setVoted(true);
@@ -214,7 +228,7 @@ public class DistrictServer extends Thread{
 		printCandidateStatusesToFile();
 		LOGGER.info("Vote successful! Candidate statuses file updated.");
 
-		return Constants.returnCodes.SUCCESS;
+		return Constants.returnCodes.SUCCESS.name();
 	}
 
 	/**
