@@ -62,6 +62,12 @@ public class PollingStation extends Observable {
         System.out.println(Arrays.toString(packetDataInformation));
         if (packetDataInformation[0].contains(Constants.returnCodes.WRONG_CREDENTIALS.name())) {
             result = new String[] {Constants.returnCodes.WRONG_CREDENTIALS.name()};
+        } else if (packetDataInformation[0].contains(Constants.returnCodes.SUCCESS.name())) {
+            if (response.length() < 2) {
+                return; // SOMETHING WENT WRONG
+            }
+
+            result = new String[] {Constants.returnCodes.SUCCESS.name()};
         }
         // TODO: complete login setup
         updateObservers(result);
