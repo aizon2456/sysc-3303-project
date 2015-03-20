@@ -9,7 +9,7 @@ public class MockServer extends Thread {
     private int port;
     private int packetSize;
     private String toSend = "";
-    private String address = "";
+	private String address = "";
 
     public MockServer(int port, int packetSize) {
         this.port = port;
@@ -37,6 +37,7 @@ public class MockServer extends Thread {
 	            byte[] response = request.getData();
 	            DatagramPacket reply = new DatagramPacket(response, response.length,
                                         request.getAddress(), request.getPort());
+	            Thread.sleep(2000);
 	            aSocket.send(reply);
             }
             else {
@@ -52,8 +53,11 @@ public class MockServer extends Thread {
             e.printStackTrace();
         } finally {
             if (aSocket != null)
-            	System.out.println("HERE");
                 aSocket.close();
         }
     }
+    
+    public void setToSend(String toSend) {
+		this.toSend = toSend;
+	}
 }
