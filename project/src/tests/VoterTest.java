@@ -66,7 +66,7 @@ public class VoterTest {
 
     @Test
     public void testGetLoginName() throws Exception {
-        assertNull("", voter.getLoginName());
+        assertEquals("", voter.getLoginName());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class VoterTest {
 
     @Test
     public void testGetPassword() throws Exception {
-        assertNull("", voter.getPassword());
+        assertEquals("", voter.getPassword());
     }
 
     @Test

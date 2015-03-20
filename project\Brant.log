@@ -1,42 +1,42 @@
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer setUpFileLogger
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer setUpFileLogger
 INFO: Logger initialized
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer buildVoterCandidateList
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer buildVoterCandidateList
 INFO: District name is valid: Brant
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer buildVoterCandidateList
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of voters generated.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer buildVoterCandidateList
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of voters: 30
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer buildVoterCandidateList
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of candidates generated
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer buildVoterCandidateList
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of candidates 3
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: REGISTER packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer register
-INFO: Name: Fulton Jackson, SIN: 207334953, District: Brant has been successfully registered.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer register
+INFO: Name: Nina Dodson, SIN: 643032984, District: Brant has been successfully registered.
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: REGISTER packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: REGISTER packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer register
-WARNING: Fulton Jackson is already registered.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer register
+WARNING: Nina Dodson is already registered.
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: REGISTER packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer register
-WARNING: Name: Fulton TotallyFakeName, SIN: 207334953, District: Brant does not exist.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer register
+WARNING: Name: Nina TotallyFakeName, SIN: 643032984, District: Brant does not exist.
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: LOGIN packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer loginUser
-INFO: login1 has successfully logged in.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer loginUser
+INFO: login1 has succesfully logged in.
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: LOGIN packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer loginUser
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer loginUser
 WARNING: TotallyFakeLogin has input the wrong credentials.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: VOTE packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer vote
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer vote
 INFO: Vote successful! Candidate statuses file updated.
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: VOTE packet received
-Mar 19, 2015 9:17:08 PM districtServer.DistrictServer vote
+Mar 19, 2015 11:10:08 PM districtServer.DistrictServer vote
 WARNING: login1 has already voted.
