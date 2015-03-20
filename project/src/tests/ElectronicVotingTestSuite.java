@@ -1,6 +1,5 @@
 package tests;
 
-import districtServer.DistrictServer;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -11,8 +10,7 @@ import org.junit.runners.Suite;
         PollingStationTest.class,
         VoterTest.class,
         CandidateTest.class,
-        DistrictServerTest.class,
-        DistrictServer.class
+        DistrictServerTest.class
 })
 public class ElectronicVotingTestSuite {
 
