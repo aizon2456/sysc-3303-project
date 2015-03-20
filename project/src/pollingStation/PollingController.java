@@ -40,6 +40,9 @@ public class PollingController implements ActionListener {
             String[] fields = view.getRegistrationFields();
             System.out.println(Arrays.toString(fields));
             model.register(fields[0], fields[1], fields[2], fields[3], fields[4]);
+        } else if (option.equals("Vote")) {
+            String selectedCandidate = view.getSelectedCandidate();
+            model.voteFor(selectedCandidate);
         } else if (option.equals("Cancel")) {
             view.showMainMenu();
         }

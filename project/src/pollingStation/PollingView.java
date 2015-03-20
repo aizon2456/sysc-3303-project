@@ -5,6 +5,7 @@ import constants.Constants;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,7 +17,7 @@ public class PollingView implements Observer {
     private JButton mainRegistration, mainLogin;
     private JTextField firstNameField, lastNameField, sinField, loginField, passwordField;
 
-    private JRadioButton[] candidates;
+    private  ButtonGroup candidateRadioButtons;
 
     private JPanel registrationPanel;
     private Container mainPanel;
@@ -88,25 +89,27 @@ public class PollingView implements Observer {
         registrationPanel.add(register);
     }
 
-    private void showVotingMenu() { //String[][] candidates
+    private void showVotingMenu(String[] candidates) { //String[][] candidates
 
-        String[][] candidates = new String[][] {
-                {"first last name", "sin"},
-                {"first last name", "sin"},
-                {"first last name", "sin"},
-                {"first last name", "sin"},
-                {"first last name 2", "sin2"}
-        };
+//        String[][] candidates = new String[][] {
+//                {"first last name", "sin"},
+//                {"first last name", "sin"},
+//                {"first last name", "sin"},
+//                {"first last name", "sin"},
+//                {"first last name 2", "sin2"}
+//        };
 
         votingPanel = new JPanel(new GridLayout(candidates.length + 1, 2));
 
-        this.candidates = new JRadioButton[candidates.length];
-        for (int i = 0; i < candidates.length; i++) {
-            JLabel l = new JLabel(candidates[i][0]);
+//        this.candidates = new JRadioButton[candidates.length];
+        candidateRadioButtons = new ButtonGroup();
+        for (int i = 2; i < candidates.length; i += 2) { // start after returnCode
+            JLabel l = new JLabel(candidates[i - 1]);
             votingPanel.add(l);
             JRadioButton btn = new JRadioButton();
-            btn.setActionCommand(candidates[i][1]);
-            this.candidates[i] = btn;
+            btn.setActionCommand(candidates[i]);
+//            this.candidates[i] = btn;
+            candidateRadioButtons.add(btn);
             l.setLabelFor(btn);
             votingPanel.add(btn);
         }
@@ -153,6 +156,11 @@ public class PollingView implements Observer {
                 sinField.getText(), loginField.getText(), passwordField.getText()};
     }
 
+    public String getSelectedCandidate() {
+        if (candidateRadioButtons == null) return "";
+        return candidateRadioButtons.getSelection().getActionCommand();
+    }
+
     public String[] loginPopup() {
         JTextField username = new JTextField();
         JTextField password = new JPasswordField();
@@ -168,23 +176,37 @@ public class PollingView implements Observer {
         return new String[] {username.getText(), password.getText()};
     }
 
+    private void displayMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
 
-        if(arg == Constants.returnCodes.SUCCESS){
+        String[] arguments = (String[])arg;
 
-        } else if(arg == Constants.returnCodes.NON_EXISTENT){
-
-        } else if(arg == Constants.returnCodes.ALREADY_REGISTERED){
-
-        } else if(arg == Constants.returnCodes.WRONG_CREDENTIALS){
-
-        } else if(arg == Constants.returnCodes.ALREADY_VOTED) {
-
-        } else if (arg == Constants.packetType.NO_RESPONSE) {
+        if (arguments[0].equals(Constants.returnCodes.LOGIN_SUCCESS.name())) {
+            showVotingMenu(arguments);
+        } else if (arguments[0].equals(Constants.returnCodes.REG_SUCCESS.name())) {
+            displayMessage("Registration Successful");
+            showMainMenu();
+        }else if (arguments[0].equals(Constants.returnCodes.VOTE_SUCCESS.name())) {
+            displayMessage("Vote Successful");
+            showMainMenu();
+        } else if (arguments[0].equals(Constants.returnCodes.NON_EXISTENT.name())) {
+            displayMessage("Voter does not exist");
+        } else if (arguments[0].equals(Constants.returnCodes.ALREADY_REGISTERED.name())) {
+            displayMessage("Voter already registered");
+        } else if (arguments[0].equals(Constants.returnCodes.WRONG_CREDENTIALS.name())) {
+            displayMessage("Wrong Registration Credentials");
+        } else if (arguments[0].equals(Constants.returnCodes.ALREADY_VOTED.name())) {
+            displayMessage("Voter already submitted vote");
+        } else if (arguments[0].equals(Constants.returnCodes.LOGIN_EXISTS.name())) {
+            displayMessage("Login name is already in use");
+        } else if (arguments[0].equals(Constants.packetType.NO_RESPONSE.name())) {
             System.out.println("NO RESPONSE");
         } else {
-            System.out.println("Unknown Response: "+ arg.toString());
+            System.out.println("Unknown Response: " + Arrays.toString(arguments));
         }
     }
 }

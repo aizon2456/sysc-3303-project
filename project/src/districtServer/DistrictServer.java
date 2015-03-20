@@ -5,7 +5,6 @@ import constants.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +13,7 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * 
- * @author Nikola Neskovic (100858043), Ian Wong, Kevin Rosengren (100848909), Jonathon Penny
+ * @author Nikola Neskovic (100858043), Ian Wong, Kevin Rosengren (100848909), Jonathan Penny (100884228)
  * @since March 17th 2015
  */
 public class DistrictServer extends Thread{
@@ -35,7 +34,7 @@ public class DistrictServer extends Thread{
 
 		setUpFileLogger(districtName);
 		buildVoterCandidateList(districtName);
-		districtServerConnection = new DistrictServerConnection(districtServerPort);
+		districtServerConnection = new DistrictServerConnection();
 	}
 
 	@Override
@@ -45,10 +44,10 @@ public class DistrictServer extends Thread{
         while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
-			packetData = districtServerConnection.beginListening();
+			packetData = districtServerConnection.beginListening(districtServerPort);
 			LOGGER.info("Received request: " + new String(packetData));
 
-			Constants.returnCodes returnCode = parsePacketDataAndPerformCorrespondingAction(packetData);
+			String returnCode = parsePacketDataAndPerformCorrespondingAction(packetData);
 			LOGGER.info("Result of packet: " + returnCode);
 
 			districtServerConnection.send(returnCode);
@@ -56,7 +55,6 @@ public class DistrictServer extends Thread{
 			LOGGER.info("Message sent to port: " + port + " at address: " + districtServerConnection.getRequest().getAddress());
 
 		}
-		//districtServerConnection.kill();
 	}
 
 	private void printCandidateStatusesToFile(){
@@ -103,14 +101,13 @@ public class DistrictServer extends Thread{
 	 * @param packetData: received data packet
 	 * @return The result of the operation based on the contents of the packet. 
 	 */
-	public Constants.returnCodes parsePacketDataAndPerformCorrespondingAction(byte[] packetData){
+	public String parsePacketDataAndPerformCorrespondingAction(byte[] packetData){
 		String request = new String(packetData);
-        int endOfPacket = request.indexOf(Constants.PACKET_END);
-        if (endOfPacket == -1) endOfPacket = request.length();
-		String[] packetDataInformation = request.substring(0, endOfPacket).split(Constants.PACKET_DELIMITER);
-        System.out.println(Arrays.toString(packetDataInformation));
-		String firstName, lastName, sin, login, password;
-		Constants.returnCodes status = null;
+		String delimiter = Constants.PACKET_DELIMITER;
+		String[] packetDataInformation = request.split(delimiter);
+		String firstName = null, lastName = null, sin = null, login = null, password = null;
+		String status = null;
+
 		if(packetDataInformation[0].equals(Constants.packetType.REGISTER.name())){
 			LOGGER.info("REGISTER packet received");
 			firstName = packetDataInformation[1];
@@ -121,9 +118,6 @@ public class DistrictServer extends Thread{
 			status = register(firstName, lastName, sin, login, password);
 		}else if(packetDataInformation[0].equals(Constants.packetType.LOGIN.name())){
 			LOGGER.info("LOGIN packet received");
-            if (packetDataInformation.length < 3)
-                return loginUser("-1", "-1");
-
 			login = packetDataInformation[1];
 			password = packetDataInformation[2];
 			status = loginUser(login, password);
@@ -148,11 +142,12 @@ public class DistrictServer extends Thread{
 	 * @return the result of the register operation. Register will fail if the login name already exits, if the 
 	 * user is already registered or if the user does not exist.
 	 */
-	private Constants.returnCodes register(String firstName, String lastName, String sin, String login, String password){
-        for (Voter voter2 : voters) {
-            if (voter2.getLoginName().equals(login))
-                return Constants.returnCodes.LOGIN_EXISTS;
-        }
+
+	private String register(String firstName, String lastName, String sin, String login, String password){
+		for(int i = 0; i < voters.size(); i++){
+			if(voters.get(i).getLoginName().equals(login))
+				return Constants.returnCodes.LOGIN_EXISTS.name();
+		}
 
 		Voter voter = new Voter(firstName, lastName, sin, districtName);
 
@@ -161,20 +156,20 @@ public class DistrictServer extends Thread{
 				voter = voters.get(i);
 				if(!voter.getLoginName().equals("") || !voter.getPassword().equals("")){
 					LOGGER.warning(firstName + " " + lastName + " is already registered.");
-					return Constants.returnCodes.ALREADY_REGISTERED;
+					return Constants.returnCodes.ALREADY_REGISTERED.name();
 				}
 				voter.setLoginName(login);
 				voter.setPassword(password);
 				break;
 			}else if(i == voters.size() -1){
 				LOGGER.warning(voter.toString() + " does not exist.");
-				return Constants.returnCodes.NON_EXISTENT;
+				return Constants.returnCodes.NON_EXISTENT.name();
 			}
 
 		}
 		
 		LOGGER.info(voter.toString() + " has been successfully registered.");
-		return Constants.returnCodes.SUCCESS;
+		return Constants.returnCodes.REG_SUCCESS.name();
 	}
 
 	/**
@@ -184,31 +179,43 @@ public class DistrictServer extends Thread{
 	 * @return return the result of the login operation. If the login credential are incorrect the method
 	 * will return WRONG_CREDENTIALS, otherwise it will return success.
 	 */
-	private Constants.returnCodes loginUser(String login,String password){
-
-        System.out.println("login: " + login + " password: " + password);
-        for (Voter voter : voters) {
-            if (voter.getLoginName().equals(login) && voter.getPassword().equals(password)) {
-                LOGGER.info(login + " has successfully logged in.");
-                return Constants.returnCodes.SUCCESS;
-            }
-        }
+	private String loginUser(String login,String password){
+		for(int i = 0; i < voters.size(); i++){
+			if(voters.get(i).getLoginName().equals(login) && voters.get(i).getPassword().equals(password)){
+				LOGGER.info(login + " has succesfully logged in.");
+				return Constants.returnCodes.LOGIN_SUCCESS.name() + getDelimitedCandidates();
+			}
+		}
 		LOGGER.warning(login + " has input the wrong credentials.");
-
-		return Constants.returnCodes.WRONG_CREDENTIALS;
+		return Constants.returnCodes.WRONG_CREDENTIALS.name();
+	}
+	
+	/**
+	 * Returns a string for the return send packet
+	 * @return The string of candidates delimited by a constant character
+	 */
+	public String getDelimitedCandidates() {
+		String result = "";
+		for (int i = 0; i < candidates.size(); i++) {
+			result += Constants.PACKET_DELIMITER + candidates.get(i).getFirstName() + 
+					" " + candidates.get(i).getLastName() + Constants.PACKET_DELIMITER
+					+ candidates.get(i).getSocialInsuranceNumber();
+		}
+		return result;
 	}
 
 	/**
-	 * Adds a vote to a candidate (sin) and set vote to TRUE for the voter.
+	 * Adds a voteFor to a candidate (sin) and set voteFor to TRUE for the voter.
 	 * @param login the login name of the user who is voting.
 	 * @param sin The social insurance number of the candidate being voted for.
-	 * @return return the result of the vote operation. If a user has already voted the ALREADY_VOTED enum
+	 * @return return the result of the voteFor operation. If a user has already voted the ALREADY_VOTED enum
 	 * will be return. Otherwise the SUCCESS enum will be return.
 	 */
-	private Constants.returnCodes vote(String login, String sin){
+	private String vote(String login, String sin){
 		Candidate candidate = null;
 		Voter voter = null;
 
+        System.out.println("SIN: " + sin);
         for (Candidate candidate1 : candidates) {
             if (candidate1.getSocialInsuranceNumber().equals(sin))
                 candidate = candidate1;
@@ -220,7 +227,7 @@ public class DistrictServer extends Thread{
         assert voter != null;
         if(voter.hasVoted()){
 			LOGGER.warning(login + " has already voted.");
-			return Constants.returnCodes.ALREADY_VOTED;
+			return Constants.returnCodes.ALREADY_VOTED.name();
 		}
         assert candidate != null;
         candidate.incrementNumVotes();
@@ -229,7 +236,7 @@ public class DistrictServer extends Thread{
 		printCandidateStatusesToFile();
 		LOGGER.info("Vote successful! Candidate statuses file updated.");
 
-		return Constants.returnCodes.SUCCESS;
+		return Constants.returnCodes.VOTE_SUCCESS.name();
 	}
 
 	/**

@@ -59,7 +59,8 @@ public class PollingStationTest {
 
     @Test
     public void testVoteSubmission() {
-        String response = pollingStationServer.vote(LOGIN_NAME, CANDIDATE);
+        pollingStationServer.setLogin(LOGIN_NAME);
+        String response = pollingStationServer.voteFor(CANDIDATE);
 
         assertTrue("", response.contains(LOGIN_NAME));
         assertTrue("", response.contains(CANDIDATE));

@@ -28,6 +28,7 @@ public class MockServer extends Thread {
         DatagramSocket aSocket = null;
         try {
             if (toSend.length() == 0) {
+            	System.out.println("RECEIVE THEN SEND");
 	        	aSocket = new DatagramSocket(port);
 	            byte[] buffer = new byte[packetSize];
 	            DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -39,6 +40,7 @@ public class MockServer extends Thread {
 	            aSocket.send(reply);
             }
             else {
+            	System.out.println("SEND ONLY");
             	aSocket = new DatagramSocket();
             	byte[] message = toSend.getBytes();
 	            DatagramPacket testPacket = new DatagramPacket(message, message.length,
@@ -50,6 +52,7 @@ public class MockServer extends Thread {
             e.printStackTrace();
         } finally {
             if (aSocket != null)
+            	System.out.println("HERE");
                 aSocket.close();
         }
     }

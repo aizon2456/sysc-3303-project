@@ -2,7 +2,6 @@ package districtServer;
 
 import constants.Constants;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,15 +10,16 @@ import java.net.SocketException;
 public class DistrictServerConnection {
 
 	private DatagramPacket request;
-	private DatagramSocket aSocket;
 
-	public DistrictServerConnection(int districtServerPort){
-		try {
-			aSocket = new DatagramSocket(districtServerPort);
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-	}
+
+//	public DistrictServerConnection(int districtServerPort){
+//		try {
+//			aSocket = new DatagramSocket(districtServerPort);
+//		} catch (SocketException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		};
+//	}
 
 	/**
 	 * This function begins the main server listening loop, it takes messages
@@ -27,14 +27,21 @@ public class DistrictServerConnection {
 	 * The response from the main server is forwarded to the client
 	 * @return data in packet
 	 */
-	public byte[] beginListening(){
+	public byte[] beginListening(int districtServerPort){
 		try {
-			byte[] buffer = new byte[Constants.PACKET_SIZE];
+			DatagramSocket aSocket;
+			try {
+				aSocket = new DatagramSocket(districtServerPort);
+				
+				byte[] buffer = new byte[Constants.PACKET_SIZE];
 
-			request = new DatagramPacket(buffer, buffer.length);
-			aSocket.receive(request);
-			return request.getData();
-
+				request = new DatagramPacket(buffer, buffer.length);
+				aSocket.receive(request);			
+				aSocket.close();
+				return new String(request.getData()).trim().getBytes();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			};
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
 		} catch (IOException e) {
@@ -47,17 +54,15 @@ public class DistrictServerConnection {
 	 * Sends the result of the previous request back to the original sender.
 	 * @param returnCode the result of the most recent request
 	 */
-	public void send(Constants.returnCodes returnCode){
+	public void send(String returnCode){
 		try {
-			byte[] buffer;
+            DatagramSocket aSocket = new DatagramSocket();
+            byte[] buffer = (returnCode).getBytes();
 
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            byteStream.write(returnCode.name().getBytes());
-            byteStream.write(Constants.PACKET_END);
-            buffer = byteStream.toByteArray();
+            DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
+            aSocket.send(response);
+            aSocket.close();
 
-			DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
-			aSocket.send(response);
 
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());

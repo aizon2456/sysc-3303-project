@@ -56,15 +56,15 @@ public class CentralServerConnection {
 		String resp = new String(response);
 		String data = "";
 		
-		for (int r = 0; r < resp.length(); r++) {
-            if ((char)response[r] == Constants.PACKET_END) {
-                break;
-            }
-            else {
-                data += (char)response[r];
-            }
-		}
+//		for (int r = 0; r < resp.length(); r++) {
+//            if ((char)response[r] == Constants.PACKET_END) {
+//                break;
+//            }
+//            else {
+//                data += (char)response[r];
+//            }
+//		}
 		
-		return data;
+		return new String(response).trim();
 	}
 }
