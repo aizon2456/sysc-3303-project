@@ -11,8 +11,6 @@ import java.util.Observer;
 
 public class PollingView implements Observer {
     private JFrame frame;
-    private JPanel votingPanel, ErrorPanel;
-    private JTextField ErrorMessage;
     private JButton register, vote, cancel;
     private JButton mainRegistration, mainLogin;
     private JTextField firstNameField, lastNameField, sinField, loginField, passwordField;
@@ -25,7 +23,7 @@ public class PollingView implements Observer {
     public PollingView(boolean test){
         //Create and set up the window.
         frame = new JFrame("Polling Station");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(400, 400));
 
         vote = new JButton("Vote");
@@ -35,9 +33,7 @@ public class PollingView implements Observer {
         createRegistrationPanel();
 
         frame.setVisible(true);
-//        showMainMenu();
-        showRegisterMenu();
-//        showVotingMenu();
+        showMainMenu();
     }
 
     private void createMainPanel() {
@@ -89,26 +85,16 @@ public class PollingView implements Observer {
         registrationPanel.add(register);
     }
 
-    private void showVotingMenu(String[] candidates) { //String[][] candidates
+    private void showVoteMenu(String[] candidates) { //String[][] candidates
 
-//        String[][] candidates = new String[][] {
-//                {"first last name", "sin"},
-//                {"first last name", "sin"},
-//                {"first last name", "sin"},
-//                {"first last name", "sin"},
-//                {"first last name 2", "sin2"}
-//        };
+        JPanel votingPanel = new JPanel(new GridLayout(candidates.length + 1, 2));
 
-        votingPanel = new JPanel(new GridLayout(candidates.length + 1, 2));
-
-//        this.candidates = new JRadioButton[candidates.length];
         candidateRadioButtons = new ButtonGroup();
         for (int i = 2; i < candidates.length; i += 2) { // start after returnCode
             JLabel l = new JLabel(candidates[i - 1]);
             votingPanel.add(l);
             JRadioButton btn = new JRadioButton();
             btn.setActionCommand(candidates[i]);
-//            this.candidates[i] = btn;
             candidateRadioButtons.add(btn);
             l.setLabelFor(btn);
             votingPanel.add(btn);
@@ -130,15 +116,6 @@ public class PollingView implements Observer {
         frame.setContentPane(registrationPanel);
         frame.pack();
     }
-
-    private void showVoteMenu(){
-        ErrorPanel.setLocation(500,500);
-    }
-    private void showError(String error){
-        ErrorMessage.setText(error);
-        ErrorPanel.setLocation(0,0);
-    }
-
 
     public void addController(ActionListener controller) {
 
@@ -186,7 +163,7 @@ public class PollingView implements Observer {
         String[] arguments = (String[])arg;
 
         if (arguments[0].equals(Constants.returnCodes.LOGIN_SUCCESS.name())) {
-            showVotingMenu(arguments);
+            showVoteMenu(arguments);
         } else if (arguments[0].equals(Constants.returnCodes.REG_SUCCESS.name())) {
             displayMessage("Registration Successful");
             showMainMenu();

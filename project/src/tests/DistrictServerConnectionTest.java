@@ -1,20 +1,15 @@
 package tests;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
-import static org.junit.Assert.*;
-
+import constants.Constants;
+import districtServer.DistrictServerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.Constants;
-import districtServer.DistrictServerConnection;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import static org.junit.Assert.assertEquals;
 
 public class DistrictServerConnectionTest {
 

@@ -11,16 +11,7 @@ import java.net.SocketException;
 public class DistrictServerConnection {
 
 	private DatagramPacket request;
-
-
-//	public DistrictServerConnection(int districtServerPort){
-//		try {
-//			aSocket = new DatagramSocket(districtServerPort);
-//		} catch (SocketException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		};
-//	}
+    private DatagramSocket aSocket;
 
 	/**
 	 * This function begins the main server listening loop, it takes messages
@@ -29,20 +20,16 @@ public class DistrictServerConnection {
 	 * @return data in packet
 	 */
 	public byte[] beginListening(int districtServerPort){
+        System.out.println("GOT HERE");
 		try {
-			DatagramSocket aSocket;
-			try {
-				aSocket = new DatagramSocket(districtServerPort);
-				
-				byte[] buffer = new byte[Constants.PACKET_SIZE];
+            aSocket = new DatagramSocket(districtServerPort);
+            byte[] buffer = new byte[Constants.PACKET_SIZE];
 
-				request = new DatagramPacket(buffer, buffer.length);
-				aSocket.receive(request);			
-				aSocket.close();
-				return new String(request.getData()).trim().getBytes();
-			} catch (SocketException e) {
-				e.printStackTrace();
-			};
+            request = new DatagramPacket(buffer, buffer.length);
+            aSocket.receive(request);
+            aSocket.close();
+            return new String(request.getData()).trim().getBytes();
+
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
 		} catch (IOException e) {
@@ -88,7 +75,7 @@ public class DistrictServerConnection {
 				aSocket.close();
 			} catch (SocketException e) {
 				e.printStackTrace();
-			};
+			}
 
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
@@ -100,4 +87,9 @@ public class DistrictServerConnection {
 	public DatagramPacket getRequest() {
 		return request;
 	}
+
+    public int getPort() {
+        if (aSocket == null) return -1;
+        return aSocket.getLocalPort();
+    }
 }

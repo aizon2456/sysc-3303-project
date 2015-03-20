@@ -9,10 +9,6 @@ import static org.junit.Assert.*;
 
 public class PollingStationTest {
 
-//    private static final String[] DISTRICT_SERVER_ADDRESSES =
-//            new String[] {"127.0.0.1", "127.0.0.2", "127.0.0.3", "127.0.0.4", "127.0.0.5", "127.0.0.6"};
-//    private static final int[] DISTRICT_PORTS = new int[] {2015, 2016, 2017, 2018, 2019, 2020};
-
     private static final String FIRST_NAME  = "John";
     private static final String LAST_NAME   = "Doe";
     private static final String SIN         = "123 456 789";
@@ -32,7 +28,7 @@ public class PollingStationTest {
     @Test
     public void testVoterRegistration() {
         String response = pollingStationServer.register(FIRST_NAME, LAST_NAME, SIN, LOGIN_NAME, PASSWORD);
-        System.out.println("Response FROM TEST VOTER: " + response);
+
         assertTrue("", response.contains(FIRST_NAME));
         assertTrue("", response.contains(LAST_NAME));
         assertTrue("", response.contains(SIN));
@@ -41,12 +37,7 @@ public class PollingStationTest {
     }
 
     @Test
-    public void testInvalidRegistrationInformation() {
-
-    }
-
-    @Test
-    public void testVoterSuccessfulLogin() {
+    public void testVoterLogin() {
         String response = pollingStationServer.login(LOGIN_NAME, PASSWORD);
 
         assertTrue("", response.contains(LOGIN_NAME));
@@ -54,24 +45,11 @@ public class PollingStationTest {
     }
 
     @Test
-    public void testVoterUnsuccessfulLogin() {
-
-    }
-
-    @Test
     public void testVoteSubmission() {
         pollingStationServer.setLogin(LOGIN_NAME);
         String response = pollingStationServer.voteFor(CANDIDATE);
 
-        System.out.println("VOTE: " + response);
         assertTrue("", response.contains(LOGIN_NAME));
         assertTrue("", response.contains(CANDIDATE));
-    }
-
-
-
-    @Test
-    public void testVoteInvalidSubmission() {
-
     }
 }

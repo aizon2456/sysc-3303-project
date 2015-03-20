@@ -19,9 +19,9 @@ public class DistrictServerTest {
 	private String delimiter = String.valueOf(Constants.PACKET_DELIMITER);
 	private ArrayList<Voter> voters;
 	private ArrayList<Candidate> candidates;
-	private final String login1 = "login1";
-	private final String login2 = "login2";
-	private final String password = "password";
+	private static final String LOGIN1 = "login1";
+	private static final String LOGIN2 = "login2";
+	private static final String PASSWORD = "password";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -31,15 +31,15 @@ public class DistrictServerTest {
 	}
 	
 	@Test
-	public void testParsePacketDataAndPerformCorresspondingAction(){
+	public void testParsePacketDataAndPerformCorrespondingAction(){
 		int randomVoter = (int) (Math.random()*(voters.size()-1));
 		
 		Voter voter = voters.get(randomVoter);
 		String message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 														+ delimiter + voter.getLastName()
 														+ delimiter + voter.getSocialInsuranceNumber()
-														+ delimiter + login1
-														+ delimiter + password;
+														+ delimiter + LOGIN1
+														+ delimiter + PASSWORD;
 		
 
 		String test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
@@ -53,8 +53,8 @@ public class DistrictServerTest {
 		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 													+ delimiter + voter.getLastName()
 													+ delimiter + voter.getSocialInsuranceNumber()
-													+ delimiter + login2
-													+ delimiter + password;
+													+ delimiter + LOGIN2
+													+ delimiter + PASSWORD;
 		
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
 		
@@ -63,29 +63,29 @@ public class DistrictServerTest {
 		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 													+ delimiter + "TotallyFakeName"
 													+ delimiter + voter.getSocialInsuranceNumber()
-													+ delimiter + login2
-													+ delimiter + password;
+													+ delimiter + LOGIN2
+													+ delimiter + PASSWORD;
 		
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
 		
 		assertEquals(test, Constants.returnCodes.NON_EXISTENT.name());
 		
-		message = Constants.packetType.LOGIN 	+ delimiter + login1 
-												+ delimiter  + password;
+		message = Constants.packetType.LOGIN 	+ delimiter + LOGIN1
+												+ delimiter  + PASSWORD;
 		
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
 		
 		assertEquals(test, Constants.returnCodes.LOGIN_SUCCESS.name() + districtServer.getDelimitedCandidates());
 		
 		message = Constants.packetType.LOGIN 	+ delimiter + "TotallyFakeLogin"
-												+ delimiter + password;
+												+ delimiter + PASSWORD;
 		
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
 		
 		assertEquals(test, Constants.returnCodes.WRONG_CREDENTIALS.name());
 
 		Candidate candidate = candidates.get(0);
-		message = Constants.packetType.VOTE + delimiter + login1
+		message = Constants.packetType.VOTE + delimiter + LOGIN1
 											+ delimiter + candidate.getSocialInsuranceNumber();
 		
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
@@ -99,7 +99,7 @@ public class DistrictServerTest {
 		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
 													+ delimiter + voter.getLastName()
 													+ delimiter + voter.getSocialInsuranceNumber()
-													+ delimiter + password;
+													+ delimiter + PASSWORD;
 		
 		test = districtServer.parsePacketDataAndPerformCorrespondingAction(message.getBytes());
 		

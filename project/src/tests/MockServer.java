@@ -46,7 +46,6 @@ public class MockServer extends Thread {
             	System.out.println("RECEIVE THEN SEND");
 	            byte[] buffer = new byte[packetSize];
 	            DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-//	            aSocket.setSoTimeout(2000);
 	            aSocket.receive(request);
 	            byte[] response = request.getData();
 	            DatagramPacket reply = new DatagramPacket(response, response.length,

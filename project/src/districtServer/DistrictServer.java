@@ -44,8 +44,9 @@ public class DistrictServer extends Thread{
         while(true){
 			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
-			packetData = districtServerConnection.beginListening(districtServerPort);
-			LOGGER.info("Received request: " + new String(packetData));
+            packetData = districtServerConnection.beginListening(districtServerPort);
+
+            LOGGER.info("Received request: " + new String(packetData));
 
 			String returnCode = parsePacketDataAndPerformCorrespondingAction(packetData);
 			LOGGER.info("Result of packet: " + returnCode);
@@ -80,7 +81,7 @@ public class DistrictServer extends Thread{
 		try {  
 
 			// This block configure the logger with handler and formatter  
-			String logLocation = System.getProperty("user.dir") + "\\" + logName + ".log";
+			String logLocation = System.getProperty("user.dir") + System.getProperty("file.separator") + logName + ".log";
 			System.out.println(logLocation);
 			fh = new FileHandler(logLocation);  
 			LOGGER.addHandler(fh);
@@ -271,4 +272,9 @@ public class DistrictServer extends Thread{
 	public ArrayList<Candidate> getCandidates() {
 		return candidates;
 	}
+
+    public int getPort() {
+        if (districtServerConnection == null) return -1;
+        return districtServerConnection.getPort();
+    }
 }

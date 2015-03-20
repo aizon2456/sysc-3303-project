@@ -1,0 +1,14 @@
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer setUpFileLogger
+INFO: Logger initialized
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+INFO: District name is valid: Brant
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+INFO: List of voters generated.
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+INFO: Number of voters: 30
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+INFO: List of candidates generated
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+INFO: Number of candidates 3
+Mar 20, 2015 1:20:50 AM districtServer.DistrictServer run
+INFO: Listening for requests!
