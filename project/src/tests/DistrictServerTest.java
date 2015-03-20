@@ -95,6 +95,15 @@ public class DistrictServerTest {
 		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
 		
 		assertEquals(test, Constants.returnCodes.ALREADY_VOTED.name());
+		
+		message = Constants.packetType.REGISTER 	+ delimiter + voter.getFirstName()
+													+ delimiter + voter.getLastName()
+													+ delimiter + voter.getSocialInsuranceNumber()
+													+ delimiter + password;
+		
+		test = districtServer.parsePacketDataAndPerformCorresspondingAction(message.getBytes());
+		
+		assertEquals(test, Constants.returnCodes.INVALID_NUM_ARGUMENTS.name());
 	}
 	
 	@After

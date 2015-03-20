@@ -129,7 +129,7 @@ public class DistrictServer extends Thread{
 				LOGGER.severe("INCORRECT PACKET FORMAT");
 			}
 		}catch(ArrayIndexOutOfBoundsException e){
-			Constants.returnCodes.INVALID_NUM_ARGUMENTS.name();
+			return Constants.returnCodes.INVALID_NUM_ARGUMENTS.name();
 		}
 		return status;
 	}
