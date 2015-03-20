@@ -61,7 +61,7 @@ public class PollingStationConnection {
             outPacket = byteStream.toByteArray();
             DatagramPacket request = new DatagramPacket(outPacket, outPacket.length,
                                             destinationAddress, districtServerPort);
-            socket.setSoTimeout(5000);
+            socket.setSoTimeout(2000);
             socket.send(request);
             byte[] buffer = new byte[Constants.PACKET_SIZE];
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);

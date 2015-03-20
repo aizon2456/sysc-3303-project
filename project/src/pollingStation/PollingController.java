@@ -46,7 +46,7 @@ public class PollingController implements ActionListener {
         } else if (option.equals("Cancel")) {
             view.showMainMenu();
         } else if (option.equals("Debug")) {
-            // TODO: Do something here
+           	model.testParse();
         }
     }
 }
