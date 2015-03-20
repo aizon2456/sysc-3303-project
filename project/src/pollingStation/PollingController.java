@@ -2,6 +2,7 @@ package pollingStation;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class PollingController implements ActionListener {
 
@@ -32,6 +33,12 @@ public class PollingController implements ActionListener {
         if (option.equals("Login")) {
             String[] loginInformation = view.loginPopup();
             model.login(loginInformation[USERNAME], loginInformation[PASSWORD]);
+        } else if (option.equals("Registration")) {
+            view.showReigisterMenu();
+        } else if (option.equals("Register")) {
+            String[] fields = view.getRegistrationFields();
+            System.out.println(Arrays.toString(fields));
+            model.register(fields[0], fields[1], fields[2], fields[3], fields[4]);
         }
     }
 }

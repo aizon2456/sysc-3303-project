@@ -27,6 +27,7 @@ public class PollingStation extends Observable {
                 + lastName + delimiter + sin + delimiter + login + delimiter + password + Constants.PACKET_END);
 
 //        updateObservers(response);
+        parseRegistration(response);
         return response;
     }
 
@@ -62,9 +63,23 @@ public class PollingStation extends Observable {
         if (packetDataInformation[0].contains(Constants.returnCodes.WRONG_CREDENTIALS.name())) {
             result = new String[] {Constants.returnCodes.WRONG_CREDENTIALS.name()};
         }
-
+        // TODO: complete login setup
         updateObservers(result);
     }
+
+    public String[] parseRegistration(String response) {
+        String[] packetDataInformation = response.trim().split(Constants.PACKET_DELIMITER);
+
+        String[] result = new String[0];
+        System.out.println(Arrays.toString(packetDataInformation));
+        if (packetDataInformation[0].contains(Constants.returnCodes.NON_EXISTENT.name())) {
+            result = new String[] {Constants.returnCodes.NON_EXISTENT.name()};
+        }
+
+        return result;
+    }
+
+
 
     private void updateObservers(String[] response) {
         setChanged();

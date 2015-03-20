@@ -13,90 +13,96 @@ public class PollingView implements Observer {
     private JPanel VotingPanel, MainMenuPanel, RegisterPanel, ErrorPanel;
     private JTextField ErrorMessage;
     private JButton register, login, vote;
-    private JButton mainRegister, mainLogin;
+    private JButton mainRegistration, mainLogin;
     private JTextField firstNameField, lastNameField, sinField, loginField, passwordField;
     private int state = 0; // TODO: use this to indicate which menu we are looking at
 
+    private JPanel registrationPanel;
+    private Container mainPanel;
+
     public PollingView(boolean test, String[] Candidates){
-        frame = new JFrame();
-        frame.setBounds(0,0,500,500);
-        frame.setLayout(null);
-        frame.setBackground(Color.WHITE);
-        frame.setResizable(false);
-
+        //Create and set up the window.
+        frame = new JFrame("Polling Station");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(new Dimension(400, 400));
 
-        MainMenuPanel = new JPanel();
-        MainMenuPanel.setBounds(0,0,500,500);
-        frame.add(MainMenuPanel);
-        VotingPanel = new JPanel();
-        VotingPanel.setBounds(0,0,500,500);
-        frame.add(VotingPanel);
-        ButtonGroup candidates = new ButtonGroup();
-        JRadioButton candidate[] = new JRadioButton[Candidates.length];
-        vote  = new JButton("Vote");
-        vote.setBounds(0,0,300,30);
-        VotingPanel.add(vote);
-        for(int i =0; i<Candidates.length;i++) {
-            candidate[i] = new JRadioButton(Candidates[i]);
-            candidates.add(candidate[i]);
-            candidate[i].setBounds(50,50+(i*30),300,30);
-            VotingPanel.add(candidate[i]);
+        createMainPanel();
+        createRegistrationPanel();
+
+
+        //Display the window.
+//        frame.pack();
+        frame.setVisible(true);
+        showMainMenu();
+//        showReigisterMenu();
+    }
+
+    private void createMainPanel() {
+
+        //Set up the content pane.
+        mainPanel = new Container();
+        SpringLayout mainLayout = new SpringLayout();
+        mainPanel.setLayout(mainLayout);
+
+        mainLogin       = new JButton("Login");
+        mainRegistration = new JButton("Registration");
+
+        mainPanel.add(mainLogin);
+        mainPanel.add(mainRegistration);
+
+        //Adjust constraints for the label so it's at (5,5).
+        mainLayout.putConstraint(SpringLayout.WEST, mainLogin,
+                150,
+                SpringLayout.WEST, mainPanel);
+        mainLayout.putConstraint(SpringLayout.NORTH, mainLogin,
+                150,
+                SpringLayout.NORTH, mainPanel);
+
+        //Adjust constraints for the text field so it's at
+        //(<label's right edge> + 5, 5).
+        mainLayout.putConstraint(SpringLayout.WEST, mainRegistration,
+                130,
+                SpringLayout.WEST, mainPanel);
+        mainLayout.putConstraint(SpringLayout.NORTH, mainRegistration,
+                125,
+                SpringLayout.NORTH, mainPanel);
+    }
+
+    private void createRegistrationPanel() {
+
+        firstNameField = new JTextField();
+        lastNameField = new JTextField();
+        sinField = new JTextField();
+        loginField = new JTextField();
+        passwordField = new JTextField();
+
+        String[] labels = {"First Name: ", "Last Name: ", "SIN: ", "Login: ", "Password: "};
+        JTextField[] fields = {firstNameField, lastNameField, sinField, loginField, passwordField};
+
+        //Create and populate the panel.
+        registrationPanel = new JPanel(new GridLayout(6, 2));
+        for (int i = 0; i < labels.length; i++) {
+            JLabel l = new JLabel(labels[i]);
+            registrationPanel.add(l);
+            l.setLabelFor(fields[i]);
+            registrationPanel.add(fields[i]);
         }
 
-        RegisterPanel = new JPanel();
-        RegisterPanel.setBounds(0, 0, 500, 500);
-        frame.add(RegisterPanel);
         register = new JButton("Register");
-        register.setBounds(0,0,300,30);
-        RegisterPanel.add(register);
-
-        //TODO: Create fields for registration
-        firstNameField = new JTextField("");
-        lastNameField = new JTextField("");
-        sinField = new JTextField("");
-        loginField = new JTextField("");
-        passwordField = new JTextField("");
-
-        RegisterPanel.add(firstNameField);
-        RegisterPanel.add(lastNameField);
-        RegisterPanel.add(sinField);
-        RegisterPanel.add(loginField);
-        RegisterPanel.add(passwordField);
-
-
-        login = new JButton("Login");
-
-        ErrorPanel = new JPanel();
-        ErrorPanel.setBounds(0,0,500,500);
-        frame.add(ErrorPanel);
-        ErrorMessage = new JTextField("Error");
-        //TODO: Add OK button and a display for the error
-
-        mainRegister = new JButton("Register");
-        mainLogin    = new JButton("Login");
-        mainRegister.setBounds(0,0,100,10);
-        mainLogin.setBounds(0, 15, 100, 10);
-        MainMenuPanel.add(mainLogin);
-        MainMenuPanel.add(mainRegister);
-
-        frame.setVisible(true);
-        frame.setEnabled(true);
+        registrationPanel.add(register);
 
     }
 
-    private void showMainMenu(){
-        MainMenuPanel.setLocation(0, 0);
-        ErrorPanel.setLocation(500,500);
-        VotingPanel.setLocation(500,500);
-        RegisterPanel.setLocation(500,500);
+    public void showMainMenu(){
+        frame.setContentPane(mainPanel);
+        frame.pack();
     }
-    private void showReigisterMenu(){
-        MainMenuPanel.setLocation(500, 500);
-        ErrorPanel.setLocation(500,500);
-        VotingPanel.setLocation(500,500);
-        RegisterPanel.setLocation(0,0);
+
+    public void showReigisterMenu(){
+        frame.setContentPane(registrationPanel);
+        frame.pack();
     }
+
     private void showVoteMenu(){
         MainMenuPanel.setLocation(500, 500);
         ErrorPanel.setLocation(500,500);
@@ -115,11 +121,17 @@ public class PollingView implements Observer {
     public void addController(ActionListener controller) {
 
         mainLogin.addActionListener(controller);
-        mainRegister.addActionListener(controller);
+        mainRegistration.addActionListener(controller);
 
-        vote.addActionListener(controller);
+//        vote.addActionListener(controller);
         register.addActionListener(controller);
-        login.addActionListener(controller);
+//        login.addActionListener(controller);
+    }
+
+    public String[] getRegistrationFields() {
+
+        return new String[] {firstNameField.getText(), lastNameField.getText(),
+                sinField.getText(), loginField.getText(), passwordField.getText()};
     }
 
     public String[] loginPopup() {
