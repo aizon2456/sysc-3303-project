@@ -1,14 +1,26 @@
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer setUpFileLogger
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer setUpFileLogger
 INFO: Logger initialized
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: District name is valid: Brant
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of voters generated.
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of voters: 30
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of candidates generated
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of candidates 3
-Mar 20, 2015 1:20:50 AM districtServer.DistrictServer run
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer run
+INFO: Listening for requests!
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer run
+INFO: Received request: REGISTER&Janna&Moreno&232006495&login1&password
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer register
+INFO: Name: Janna Moreno, SIN: 232006495, District: Brant has been successfully registered.
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer run
+INFO: Result of packet: REG_SUCCESS
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64061 at address: /127.0.0.1
+Mar 20, 2015 1:31:31 AM districtServer.DistrictServer run
 INFO: Listening for requests!

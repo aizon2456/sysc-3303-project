@@ -12,13 +12,14 @@ import java.util.Observer;
 public class PollingView implements Observer {
     private JFrame frame;
     private JButton register, vote, cancel;
-    private JButton mainRegistration, mainLogin;
+    private JButton mainRegistration, mainLogin, debug;
     private JTextField firstNameField, lastNameField, sinField, loginField, passwordField;
 
     private  ButtonGroup candidateRadioButtons;
 
     private JPanel registrationPanel;
     private Container mainPanel;
+
 
     public PollingView(boolean test){
         //Create and set up the window.
@@ -57,6 +58,14 @@ public class PollingView implements Observer {
         mainLayout.putConstraint(SpringLayout.WEST, mainRegistration, 130,
                 SpringLayout.WEST, mainPanel);
         mainLayout.putConstraint(SpringLayout.NORTH, mainRegistration, 125,
+                SpringLayout.NORTH, mainPanel);
+
+
+        debug = new JButton("Debug");
+        mainPanel.add(debug);
+        mainLayout.putConstraint(SpringLayout.WEST, debug, 145,
+                SpringLayout.WEST, mainPanel);
+        mainLayout.putConstraint(SpringLayout.NORTH, debug, 175,
                 SpringLayout.NORTH, mainPanel);
     }
 
@@ -125,6 +134,7 @@ public class PollingView implements Observer {
         vote.addActionListener(controller);
         register.addActionListener(controller);
         cancel.addActionListener(controller);
+        debug.addActionListener(controller);
     }
 
     public String[] getRegistrationFields() {

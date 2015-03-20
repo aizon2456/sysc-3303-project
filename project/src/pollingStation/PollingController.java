@@ -45,6 +45,8 @@ public class PollingController implements ActionListener {
             model.voteFor(selectedCandidate);
         } else if (option.equals("Cancel")) {
             view.showMainMenu();
+        } else if (option.equals("Debug")) {
+            // TODO: Do something here
         }
     }
 }

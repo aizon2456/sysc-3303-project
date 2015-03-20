@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
         PollingStationTest.class,
         VoterTest.class,
         CandidateTest.class,
-        DistrictServerTest.class
+        DistrictServerTest.class,
+        FileInfoReaderTest.class
 })
 public class ElectronicVotingTestSuite {
 
