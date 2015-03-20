@@ -1,8 +1,8 @@
 package districtServer;
 
-import java.util.logging.Logger;
-
 import constants.Constants;
+
+import java.util.logging.Logger;
 
 public class DistrictServerLauncher {
 	
@@ -11,19 +11,13 @@ public class DistrictServerLauncher {
 	/** @param args String name describing the district of the server: Ottawa-Carleton, Gatineau
 	 */
 	public void main(String[] args) {
-//		SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {                                           
-//            	new DistrictServer();
-//            }
-//        });  
-		
+
 		// Instantiate the various values that need to be passed into the DistrictServer
 		String districtName = args[0];
 		String centralServerIP = "";
 		int districtServerPort = 0;
 		int centralServerPort = 0;
-		
+
 		if(args.length < 3){
 			System.out.println("Invalid number of arguments!");
 			LOGGER.severe("Invalid number of arguments!");

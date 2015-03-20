@@ -2,6 +2,7 @@ package pollingStation;
 
 import constants.Constants;
 
+import java.util.Arrays;
 import java.util.Observable;
 
 public class PollingStation extends Observable {
@@ -25,7 +26,8 @@ public class PollingStation extends Observable {
         String response = stationConnection.sendMessage(Constants.packetType.REGISTER + delimiter + firstName + delimiter
                 + lastName + delimiter + sin + delimiter + login + delimiter + password + Constants.PACKET_END);
 
-        updateObservers(response);
+//        updateObservers(response);
+        parseRegistration(response);
         return response;
     }
 
@@ -38,7 +40,7 @@ public class PollingStation extends Observable {
         String response = stationConnection.sendMessage(Constants.packetType.LOGIN + delimiter + login + delimiter
                 + password + Constants.PACKET_END);
 
-        updateObservers(response);
+        parseLogin(response);
         return response;
     }
 
@@ -49,11 +51,37 @@ public class PollingStation extends Observable {
         String response = stationConnection.sendMessage(Constants.packetType.VOTE + delimiter + login + delimiter
                 + candidateSIN + Constants.PACKET_END);
 
-        updateObservers(response);
+//        updateObservers(response);
         return response;
     }
 
-    private void updateObservers(String response) {
+    public void parseLogin(String response) {
+        String[] packetDataInformation = response.trim().split(Constants.PACKET_DELIMITER);
+
+        String[] result = new String[0];
+        System.out.println(Arrays.toString(packetDataInformation));
+        if (packetDataInformation[0].contains(Constants.returnCodes.WRONG_CREDENTIALS.name())) {
+            result = new String[] {Constants.returnCodes.WRONG_CREDENTIALS.name()};
+        }
+        // TODO: complete login setup
+        updateObservers(result);
+    }
+
+    public String[] parseRegistration(String response) {
+        String[] packetDataInformation = response.trim().split(Constants.PACKET_DELIMITER);
+
+        String[] result = new String[0];
+        System.out.println(Arrays.toString(packetDataInformation));
+        if (packetDataInformation[0].contains(Constants.returnCodes.NON_EXISTENT.name())) {
+            result = new String[] {Constants.returnCodes.NON_EXISTENT.name()};
+        }
+
+        return result;
+    }
+
+
+
+    private void updateObservers(String[] response) {
         setChanged();
         notifyObservers(response);
     }

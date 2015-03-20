@@ -20,7 +20,7 @@ public class FileInfoReader {
 	 */
 	public ArrayList<Voter> buildVoterList(String districtName){
 		ArrayList<Voter> voters = new ArrayList<Voter>();
-		String csvFile = System.getProperty("user.dir") + "\\voters.csv";
+		String csvFile = System.getProperty("user.dir") + System.getProperty("file.separator") + "voters.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -65,7 +65,7 @@ public class FileInfoReader {
 	 */
 	public ArrayList<Candidate> buildCandidateList(String districtName){
 		ArrayList<Candidate> candidates = new ArrayList<Candidate>();
-		String csvFile = System.getProperty("user.dir") + "\\candidates.csv";
+		String csvFile = System.getProperty("user.dir") + System.getProperty("file.separator") + "candidates.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -109,7 +109,7 @@ public class FileInfoReader {
 	 */
 	public boolean isValidDistrictName(String districtName){
 		//TODO this should consult 
-		String csvFile = System.getProperty("user.dir") + "\\canadianElectoralDistricts.csv";
+		String csvFile = System.getProperty("user.dir") + System.getProperty("file.separator") + "canadianElectoralDistricts.csv";
 		BufferedReader br = null;
 		String line = "";
 

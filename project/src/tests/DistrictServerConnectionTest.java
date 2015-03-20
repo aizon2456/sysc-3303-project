@@ -19,7 +19,7 @@ public class DistrictServerConnectionTest {
 	}
 
 	@After
-	public static void tearDown() throws Exception{
+	public void tearDown() throws Exception{
 		System.out.println("tearing down");
 	}
 }
