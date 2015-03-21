@@ -13,7 +13,7 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * 
- * @author Nikola Neskovic (100858043), Ian Wong, Kevin Rosengren (100848909), Jonathan Penny (100884228)
+ * @author Nikola Neskovic (100858043), Ian Wong (100848969), Kevin Rosengren (100848909), Jonathan Penny (100884228)
  * @since March 17th 2015
  */
 public class DistrictServer extends Thread{

@@ -50,7 +50,6 @@ public class MockServer extends Thread {
 	            byte[] response = request.getData();
 	            DatagramPacket reply = new DatagramPacket(response, response.length,
                                         request.getAddress(), request.getPort());
-	            Thread.sleep(2000);
 	            aSocket.send(reply);
             }
             else {

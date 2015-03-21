@@ -25,7 +25,7 @@ public class PollingStationConnectionTest {
     public void testSendMessage() {
         (new MockServer(DISTRICT_PORT, Constants.PACKET_SIZE)).start(); // create mock server
         String response = connection.sendMessage(MESSAGE);
-        assertTrue("Expected packet to contain: " + MESSAGE, response.contains(MESSAGE));
+        assertTrue("Expected packet to contain: " + MESSAGE + ", actually contained: " + response, response.contains(MESSAGE));
     }
 
     @Test
