@@ -12,19 +12,18 @@ public class DistrictServerLauncher {
 	 */
 	public static void main(String[] args) {
 
-
-        // Instantiate the various values that need to be passed into the DistrictServer
-        String districtName = args[0];
-        String centralServerIP = "";
-        int districtServerPort = 0;
-        int centralServerPort = 0;
-
         if(args.length < 3){
             System.out.println("Invalid number of arguments!");
             LOGGER.severe("Invalid number of arguments!");
             printUsageInstructions();
             System.exit(1);
         }
+
+        // Instantiate the various values that need to be passed into the DistrictServer
+        String districtName = args[0];
+        String centralServerIP = "";
+        int districtServerPort = 0;
+        int centralServerPort = 0;
 
         try{districtServerPort = Integer.parseInt(args[1].trim());}
         catch(NumberFormatException e){

@@ -1,18 +1,11 @@
 package tests;
 
-import constants.Constants;
 import districtServer.Candidate;
 import districtServer.DistrictServer;
 import districtServer.Voter;
-import org.junit.After;
 import pollingStation.PollingStation;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
-
-import static org.junit.Assert.assertTrue;
 
 public class ClientServerCommunicationTest {
 
@@ -36,36 +29,36 @@ public class ClientServerCommunicationTest {
     private int randomVoter, randomCandidate;
 
 
-    @Before
-    public void setup() {
-        districtServer = new DistrictServer(DISTRICT, DISTRICT_SERVER_PORT, CENTRAL_SERVER_PORT, CENTRAL_SERVER_IP);
-        districtServer.start();
-        while(districtServer.getPort() == -1);
-        System.out.println("MOVING ON");
-        pollingStation = new PollingStation(DISTRICT_SERVER_ADDRESS, 2000);
+//    @Before
+//    public void setup() {
+//        districtServer = new DistrictServer(DISTRICT, DISTRICT_SERVER_PORT, CENTRAL_SERVER_PORT, CENTRAL_SERVER_IP);
+//        districtServer.start();
+//        while(districtServer.getPort() == -1);
+//        System.out.println("MOVING ON");
+//        pollingStation = new PollingStation(DISTRICT_SERVER_ADDRESS, 2000);
+//
+//        voters = districtServer.getVoters();
+//        candidates = districtServer.getCandidates();
+//
+//        randomVoter = (int) (Math.random()*(voters.size()-1));
+//        randomCandidate = (int) (Math.random()*(candidates.size()-1));
+//    }
 
-        voters = districtServer.getVoters();
-        candidates = districtServer.getCandidates();
-
-        randomVoter = (int) (Math.random()*(voters.size()-1));
-        randomCandidate = (int) (Math.random()*(candidates.size()-1));
-    }
-
-    @Test
-    public void testVoterSuccessfulLogin() {
-        Voter voter = voters.get(randomVoter);
+//    @Test
+//    public void testVoterSuccessfulLogin() {
+//        Voter voter = voters.get(randomVoter);
 //        Candidate candidate = candidates.get(randomCandidate);
-
-        pollingStation.register(voter.getFirstName(),
-                                voter.getLastName(),
-                                voter.getSocialInsuranceNumber(),
-                                LOGIN1,
-                                PASSWORD1);
-
-        String response = pollingStation.login(LOGIN1, PASSWORD1);
-        System.out.println(response);
-        assertTrue(response.contains(Constants.returnCodes.LOGIN_SUCCESS.name()));
-    }
+//
+//        pollingStation.register(voter.getFirstName(),
+//                                voter.getLastName(),
+//                                voter.getSocialInsuranceNumber(),
+//                                LOGIN1,
+//                                PASSWORD1);
+//
+//        String response = pollingStation.login(LOGIN1, PASSWORD1);
+//        System.out.println(response);
+//        assertTrue(response.contains(Constants.returnCodes.LOGIN_SUCCESS.name()));
+//    }
 
 //    @Test
 //    public void testVoterUnsuccessfulLogin() {
@@ -91,10 +84,10 @@ public class ClientServerCommunicationTest {
 //    public void testInvalidVoteSubmission() {
 //        // TODO: add more test cases for different error messages
 //    }
-
-    @After
-    public void tearDown() {
+//
+//    @After
+//    public void tearDown() {
 //        districtServer = null;
-    }
+//    }
 
 }

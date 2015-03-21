@@ -36,6 +36,7 @@ public class PollingStation extends Observable {
     public String register(String firstName, String lastName, String sin, String login, String password) {
         String response = stationConnection.sendMessage(Constants.packetType.REGISTER + delimiter + firstName + delimiter
                 + lastName + delimiter + sin + delimiter + login + delimiter + password);
+
         if (!testActive)
         	updateObservers(parseResponse(response));
         return response;
@@ -80,7 +81,7 @@ public class PollingStation extends Observable {
 
     
     public void testParse() {
-		String csvFile = System.getProperty("user.dir") + System.getProperty("file.separator") + "testcases.csv";
+		String csvFile  = System.getProperty("user.dir") + System.getProperty("file.separator") + "project"+ System.getProperty("file.separator") + "testcases.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -97,10 +98,9 @@ public class PollingStation extends Observable {
 	 
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-	 
 			        // use comma as separator
-				String[] voterInfo = line.split(cvsSplitBy);
-				firstName = voterInfo[0].trim();
+                String[] voterInfo = line.split(cvsSplitBy);
+                firstName = voterInfo[0].trim();
 				lastName = voterInfo[1].trim();
 				socialInsuranceNumber = voterInfo[2].trim();
 				login = ((int)(Math.random() * 9 + 1) == 100) ? "login" + (index - 1) : "login" + index;
@@ -166,5 +166,9 @@ public class PollingStation extends Observable {
     private void updateObservers(String[] response) {
         setChanged();
         notifyObservers(response);
+    }
+
+    public boolean isTesting() {
+        return testActive;
     }
 }

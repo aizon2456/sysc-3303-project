@@ -1,106 +1,74 @@
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer setUpFileLogger
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer setUpFileLogger
 INFO: Logger initialized
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: District name is valid: Burlington
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of voters generated.
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of voters: 37
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of candidates generated
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer buildVoterCandidateList
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of candidates 3
-Mar 20, 2015 12:01:21 AM districtServer.DistrictServer run
+Mar 20, 2015 10:32:33 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Mar 20, 2015 12:02:07 AM districtServer.DistrictServer run
-INFO: Received request: REGISTER&Hedwig&Carr&962180000&A&1
-Mar 20, 2015 12:02:07 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 20, 2015 10:34:54 AM districtServer.DistrictServer run
+INFO: Received request: REGISTER&Hedwig&Carr&962180000&login&123
+Mar 20, 2015 10:34:54 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: REGISTER packet received
-Mar 20, 2015 12:02:07 AM districtServer.DistrictServer register
+Mar 20, 2015 10:34:54 AM districtServer.DistrictServer register
 INFO: Name: Hedwig Carr, SIN: 962180000, District: Burlington has been successfully registered.
-Mar 20, 2015 12:02:07 AM districtServer.DistrictServer run
+Mar 20, 2015 10:34:54 AM districtServer.DistrictServer run
 INFO: Result of packet: REG_SUCCESS
-Mar 20, 2015 12:02:07 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:02:07 AM districtServer.DistrictServer run
+Mar 20, 2015 10:34:54 AM districtServer.DistrictServer run
+INFO: Message sent to port: 57264 at address: /127.0.0.1
+Mar 20, 2015 10:34:54 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Mar 20, 2015 12:02:12 AM districtServer.DistrictServer run
-INFO: Received request: LOGIN&A&1
-Mar 20, 2015 12:02:12 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 20, 2015 10:35:03 AM districtServer.DistrictServer run
+INFO: Received request: LOGIN&login&123
+Mar 20, 2015 10:35:03 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: LOGIN packet received
-Mar 20, 2015 12:02:12 AM districtServer.DistrictServer loginUser
-INFO: A has succesfully logged in.
-Mar 20, 2015 12:02:12 AM districtServer.DistrictServer run
+Mar 20, 2015 10:35:03 AM districtServer.DistrictServer loginUser
+INFO: login has succesfully logged in.
+Mar 20, 2015 10:35:03 AM districtServer.DistrictServer run
 INFO: Result of packet: LOGIN_SUCCESS&Uma Cook&594286536&Sybill Dillon&947724860&Leigh Galloway&161302070
-Mar 20, 2015 12:02:12 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:02:12 AM districtServer.DistrictServer run
+Mar 20, 2015 10:35:03 AM districtServer.DistrictServer run
+INFO: Message sent to port: 57264 at address: /127.0.0.1
+Mar 20, 2015 10:35:03 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Mar 20, 2015 12:02:31 AM districtServer.DistrictServer run
-INFO: Received request: VOTE&A&161302070
-Mar 20, 2015 12:02:31 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 20, 2015 10:36:35 AM districtServer.DistrictServer run
+INFO: Received request: VOTE&login&594286536
+Mar 20, 2015 10:36:35 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: VOTE packet received
-Mar 20, 2015 12:02:31 AM districtServer.DistrictServer vote
+Mar 20, 2015 10:36:35 AM districtServer.DistrictServer vote
 INFO: Vote successful! Candidate statuses file updated.
-Mar 20, 2015 12:02:31 AM districtServer.DistrictServer run
+Mar 20, 2015 10:36:35 AM districtServer.DistrictServer run
 INFO: Result of packet: VOTE_SUCCESS
-Mar 20, 2015 12:02:31 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:02:31 AM districtServer.DistrictServer run
+Mar 20, 2015 10:36:35 AM districtServer.DistrictServer run
+INFO: Message sent to port: 57264 at address: /127.0.0.1
+Mar 20, 2015 10:36:35 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Mar 20, 2015 12:03:07 AM districtServer.DistrictServer run
-INFO: Received request: LOGIN&A&1
-Mar 20, 2015 12:03:07 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 20, 2015 10:37:01 AM districtServer.DistrictServer run
+INFO: Received request: LOGIN&login&123
+Mar 20, 2015 10:37:01 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: LOGIN packet received
-Mar 20, 2015 12:03:07 AM districtServer.DistrictServer loginUser
-INFO: A has succesfully logged in.
-Mar 20, 2015 12:03:07 AM districtServer.DistrictServer run
+Mar 20, 2015 10:37:01 AM districtServer.DistrictServer loginUser
+INFO: login has succesfully logged in.
+Mar 20, 2015 10:37:01 AM districtServer.DistrictServer run
 INFO: Result of packet: LOGIN_SUCCESS&Uma Cook&594286536&Sybill Dillon&947724860&Leigh Galloway&161302070
-Mar 20, 2015 12:03:07 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:03:07 AM districtServer.DistrictServer run
+Mar 20, 2015 10:37:01 AM districtServer.DistrictServer run
+INFO: Message sent to port: 57264 at address: /127.0.0.1
+Mar 20, 2015 10:37:01 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Mar 20, 2015 12:03:09 AM districtServer.DistrictServer run
-INFO: Received request: VOTE&A&161302070
-Mar 20, 2015 12:03:09 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Mar 20, 2015 10:37:06 AM districtServer.DistrictServer run
+INFO: Received request: VOTE&login&594286536
+Mar 20, 2015 10:37:06 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: VOTE packet received
-Mar 20, 2015 12:03:09 AM districtServer.DistrictServer vote
-WARNING: A has already voted.
-Mar 20, 2015 12:03:09 AM districtServer.DistrictServer run
+Mar 20, 2015 10:37:06 AM districtServer.DistrictServer vote
+WARNING: login has already voted.
+Mar 20, 2015 10:37:06 AM districtServer.DistrictServer run
 INFO: Result of packet: ALREADY_VOTED
-Mar 20, 2015 12:03:09 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:03:09 AM districtServer.DistrictServer run
-INFO: Listening for requests!
-Mar 20, 2015 12:03:12 AM districtServer.DistrictServer run
-INFO: Received request: VOTE&A&161302070
-Mar 20, 2015 12:03:12 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
-INFO: VOTE packet received
-Mar 20, 2015 12:03:12 AM districtServer.DistrictServer vote
-WARNING: A has already voted.
-Mar 20, 2015 12:03:12 AM districtServer.DistrictServer run
-INFO: Result of packet: ALREADY_VOTED
-Mar 20, 2015 12:03:12 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:03:12 AM districtServer.DistrictServer run
-INFO: Listening for requests!
-Mar 20, 2015 12:03:22 AM districtServer.DistrictServer run
-INFO: Received request: REGISTER&Hedwig&Carrs&962180000&A&1
-Mar 20, 2015 12:03:22 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
-INFO: REGISTER packet received
-Mar 20, 2015 12:03:22 AM districtServer.DistrictServer run
-INFO: Result of packet: LOGIN_EXISTS
-Mar 20, 2015 12:03:22 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:03:22 AM districtServer.DistrictServer run
-INFO: Listening for requests!
-Mar 20, 2015 12:03:25 AM districtServer.DistrictServer run
-INFO: Received request: REGISTER&Hedwig&Carrs&962180000&A&1
-Mar 20, 2015 12:03:25 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
-INFO: REGISTER packet received
-Mar 20, 2015 12:03:25 AM districtServer.DistrictServer run
-INFO: Result of packet: LOGIN_EXISTS
-Mar 20, 2015 12:03:25 AM districtServer.DistrictServer run
-INFO: Message sent to port: 57975 at address: /127.0.0.1
-Mar 20, 2015 12:03:25 AM districtServer.DistrictServer run
+Mar 20, 2015 10:37:06 AM districtServer.DistrictServer run
+INFO: Message sent to port: 57264 at address: /127.0.0.1
+Mar 20, 2015 10:37:06 AM districtServer.DistrictServer run
 INFO: Listening for requests!

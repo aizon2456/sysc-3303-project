@@ -62,7 +62,7 @@ public class PollingView implements Observer {
 
 
         debug = new JButton("Debug");
-        mainPanel.add(debug);
+//        mainPanel.add(debug);
         mainLayout.putConstraint(SpringLayout.WEST, debug, 145,
                 SpringLayout.WEST, mainPanel);
         mainLayout.putConstraint(SpringLayout.NORTH, debug, 175,
@@ -145,6 +145,7 @@ public class PollingView implements Observer {
 
     public String getSelectedCandidate() {
         if (candidateRadioButtons == null) return "";
+        if (candidateRadioButtons.getSelection() == null) return "";
         return candidateRadioButtons.getSelection().getActionCommand();
     }
 
@@ -157,8 +158,10 @@ public class PollingView implements Observer {
         };
 
         JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-        if (username.getText().equals("") || password.getText().equals(""))
-            return new String [] {"cancel", "cancel"};
+        if (username.getText().equals("") || password.getText().equals("")) {
+            displayMessage("Missing username and/or password");
+            return new String[]{"cancel", "cancel"};
+        }
 
         return new String[] {username.getText(), password.getText()};
     }
@@ -172,28 +175,32 @@ public class PollingView implements Observer {
 
         String[] arguments = (String[])arg;
 
-        if (arguments[0].equals(Constants.returnCodes.LOGIN_SUCCESS.name())) {
+        if (arguments.length == 0) return;
+        String code = arguments[0];
+
+        if (code.equals(Constants.returnCodes.LOGIN_SUCCESS.name())) {
             showVoteMenu(arguments);
-        } else if (arguments[0].equals(Constants.returnCodes.REG_SUCCESS.name())) {
+        } else if (code.equals(Constants.returnCodes.REG_SUCCESS.name())) {
             displayMessage("Registration Successful");
             showMainMenu();
-        }else if (arguments[0].equals(Constants.returnCodes.VOTE_SUCCESS.name())) {
+        }else if (code.equals(Constants.returnCodes.VOTE_SUCCESS.name())) {
             displayMessage("Vote Successful");
             showMainMenu();
-        } else if (arguments[0].equals(Constants.returnCodes.NON_EXISTENT.name())) {
+        } else if (code.equals(Constants.returnCodes.NON_EXISTENT.name())) {
             displayMessage("Voter does not exist");
-        } else if (arguments[0].equals(Constants.returnCodes.ALREADY_REGISTERED.name())) {
+        } else if (code.equals(Constants.returnCodes.ALREADY_REGISTERED.name())) {
             displayMessage("Voter already registered");
-        } else if (arguments[0].equals(Constants.returnCodes.WRONG_CREDENTIALS.name())) {
+        } else if (code.equals(Constants.returnCodes.WRONG_CREDENTIALS.name())) {
             displayMessage("Wrong Registration Credentials");
-        } else if (arguments[0].equals(Constants.returnCodes.ALREADY_VOTED.name())) {
+        } else if (code.equals(Constants.returnCodes.ALREADY_VOTED.name())) {
             displayMessage("Voter already submitted vote");
-        } else if (arguments[0].equals(Constants.returnCodes.LOGIN_EXISTS.name())) {
+        } else if (code.equals(Constants.returnCodes.LOGIN_EXISTS.name())) {
             displayMessage("Login name is already in use");
-        } else if (arguments[0].equals(Constants.packetType.NO_RESPONSE.name())) {
-            System.out.println("NO RESPONSE");
+        } else if (code.equals(Constants.packetType.NO_RESPONSE.name())) {
             displayMessage("No response, please try again.");
-        } else if (arguments[0].equals(Constants.TEST_COMPLETE)) {
+        }else if (code.equals(Constants.returnCodes.INVALID_NUM_ARGUMENTS.name())) {
+            displayMessage("Missing parameters");
+        } else if (code.equals(Constants.TEST_COMPLETE)) {
         	displayMessage("Testing completed, see DistrictServer for detailed log.");
         	System.out.println(arguments[1]);
         } else {
