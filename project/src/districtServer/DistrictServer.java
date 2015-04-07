@@ -4,6 +4,8 @@ import constants.Constants;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -19,7 +21,7 @@ import java.util.logging.SimpleFormatter;
 public class DistrictServer extends Thread{
 
 	private String districtName, centralServerIP;
-    private int districtServerPort, centralServerPort;
+    private int centralServerPort;
 	private ArrayList<Voter> voters;
 	private ArrayList<Candidate> candidates;
 	private DistrictServerConnection districtServerConnection;
@@ -28,13 +30,12 @@ public class DistrictServer extends Thread{
 	public DistrictServer(String districtName, int districtServerPort, int centralServerPort, String centralServerIP){
 
    		this.districtName = districtName;
-		this.districtServerPort = districtServerPort;
 		this.centralServerPort = centralServerPort;
 		this.centralServerIP = centralServerIP;
 
 		setUpFileLogger(districtName);
 		buildVoterCandidateList(districtName);
-		districtServerConnection = new DistrictServerConnection();
+		districtServerConnection = new DistrictServerConnection(districtServerPort);
 	}
 
 	@Override
@@ -42,9 +43,8 @@ public class DistrictServer extends Thread{
 		byte[] packetData;
 
         while(true){
-			//TODO based on some criteria this has to send a message to the central server too.
 			LOGGER.info("Listening for requests!");
-            packetData = districtServerConnection.beginListening(districtServerPort);
+            packetData = districtServerConnection.beginListening();
 
             LOGGER.info("Received request: " + new String(packetData));
 
@@ -55,6 +55,24 @@ public class DistrictServer extends Thread{
 			int port = districtServerConnection.getRequest().getPort();
 			LOGGER.info("Message sent to port: " + port + " at address: " + districtServerConnection.getRequest().getAddress());
 
+			
+			
+			if (candidates.size() > 0) {
+				String output = districtName;
+				for (int i = 0; i < candidates.size(); i++) {
+					Candidate current = candidates.get(i);
+					output += Constants.PACKET_DELIMITER + current.getFirstName() + " " + current.getLastName() 
+							+ Constants.PACKET_DELIMITER + current.getNumVotes();
+				}
+				InetAddress centralAddress;
+				try {
+					centralAddress = InetAddress.getByName(centralServerIP);
+					districtServerConnection.updateCentralServer(output, centralAddress, centralServerPort);
+				} catch (UnknownHostException e) {
+					System.err.println("Error Creating Connection: " + e);
+				}
+			}
+			
 		}
 	}
 

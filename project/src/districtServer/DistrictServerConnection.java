@@ -11,7 +11,17 @@ import java.net.SocketException;
 public class DistrictServerConnection {
 
 	private DatagramPacket request;
-    private DatagramSocket aSocket;
+    private DatagramSocket pollingStationSocket;
+    private DatagramSocket centralServerSocket;
+    
+    public DistrictServerConnection(int districtServerPort) {
+    	try {
+			pollingStationSocket = new DatagramSocket(districtServerPort);
+			centralServerSocket = new DatagramSocket();
+		} catch (SocketException e) {
+			System.out.println("Socket Error: " + e.getMessage());
+		}
+    }
 
 	/**
 	 * This function begins the main server listening loop, it takes messages
@@ -19,14 +29,12 @@ public class DistrictServerConnection {
 	 * The response from the main server is forwarded to the client
 	 * @return data in packet
 	 */
-	public byte[] beginListening(int districtServerPort){
+	public byte[] beginListening(){
 		try {
-            aSocket = new DatagramSocket(districtServerPort);
             byte[] buffer = new byte[Constants.PACKET_SIZE];
 
             request = new DatagramPacket(buffer, buffer.length);
-            aSocket.receive(request);
-            aSocket.close();
+            pollingStationSocket.receive(request);
             return new String(request.getData()).trim().getBytes();
 
 		} catch (SocketException e) {
@@ -43,12 +51,15 @@ public class DistrictServerConnection {
 	 */
 	public void send(String returnCode){
 		try {
-            DatagramSocket aSocket = new DatagramSocket();
-            byte[] buffer = (returnCode).getBytes();
+			if (request == null) {
+				throw new IOException("There is no saved packet.");
+			}
+			
+            byte[] outputBytes = returnCode.getBytes();
 
-            DatagramPacket response = new DatagramPacket(buffer, buffer.length, request.getAddress(), request.getPort());
-            aSocket.send(response);
-            aSocket.close();
+            DatagramPacket response = new DatagramPacket(outputBytes, outputBytes.length, 
+            												request.getAddress(), request.getPort());
+            pollingStationSocket.send(response);
 
 
 		} catch (SocketException e) {
@@ -65,14 +76,11 @@ public class DistrictServerConnection {
 	public void send(String returnCode, InetAddress address, int port){
 		try {
 			try {
-				DatagramSocket aSocket = new DatagramSocket();
-				byte[] buffer = (returnCode).getBytes();
-				
-				System.out.println(address + " "  + port);
-				DatagramPacket response = new DatagramPacket(buffer, buffer.length, address, port);
-				aSocket.send(response);
-				aSocket.close();
-			} catch (SocketException e) {
+				byte[] ouputBytes = returnCode.getBytes();
+				DatagramPacket response = new DatagramPacket(ouputBytes, ouputBytes.length, address, port);
+				pollingStationSocket.send(response);
+			} 
+			catch (SocketException e) {
 				e.printStackTrace();
 			}
 
@@ -83,12 +91,26 @@ public class DistrictServerConnection {
 		} 
 	}
 
+	/**
+	 * Sends a message to the central server according to 
+	 * @param output The string to put in the outgoing packet
+	 */
+	public void updateCentralServer(String output, InetAddress address, int port) {
+		try {
+			DatagramPacket outPacket = new DatagramPacket(output.getBytes(), output.getBytes().length, address, port);
+			centralServerSocket.send(outPacket);
+		} 
+		catch (IOException e) {
+			System.out.println("IO Error: " + e.getMessage());
+		}
+	}
+	
 	public DatagramPacket getRequest() {
 		return request;
 	}
 
     public int getPort() {
-        if (aSocket == null) return -1;
-        return aSocket.getLocalPort();
+        if (pollingStationSocket == null) return -1;
+        return pollingStationSocket.getLocalPort();
     }
 }
