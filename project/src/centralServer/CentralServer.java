@@ -49,6 +49,17 @@ public class CentralServer extends Observable{
 			temp.put(name, voteCount);
 			votesMap.put(districtName, temp);
 		}
+		
+		this.setChanged();
+		this.notifyObservers((String[])votesMap.keySet().toArray());
+	}
+	
+	public void districtRequest(String district) {
+		this.setChanged();
+		Map<String,Integer> candidateMap = votesMap.get(district);
+		Map<String,Map<String,Integer>> responseMap = new HashMap<>();
+		responseMap.put(district, candidateMap);
+		this.notifyObservers(responseMap);
 	}
 	
 	public void setCentralServerView(CentralServerView centralServerView){
