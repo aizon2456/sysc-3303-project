@@ -27,7 +27,7 @@ public class DistrictServer extends Thread{
 
 	public DistrictServer(String districtName, int districtServerPort, int centralServerPort, String centralServerIP){
 
-		this.districtName = districtName;
+   		this.districtName = districtName;
 		this.districtServerPort = districtServerPort;
 		this.centralServerPort = centralServerPort;
 		this.centralServerIP = centralServerIP;

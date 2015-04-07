@@ -7,23 +7,38 @@ import java.net.*;
 import java.io.*;
 
 public class CentralServerConnection {
-    /**
+	
+	DatagramSocket centralServerSocket = null;
+    
+	public CentralServerConnection(){System.out.println("CentralServerConnection initialized");}
+	
+	public boolean initializeCentralServerPort(int centralServerPort){
+		try {
+			centralServerSocket = new DatagramSocket(centralServerPort);
+		} catch (SocketException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
      * Handles the receiving of packets from DistrictServers
      * @param portNo The port number over which packets are transferred
      * @return The data in string representation which can be parsed
      */
 	public String receiveCandidateVotes(int portNo) {
-		DatagramSocket aSocket = null;
+
 		String returnValue = "";
 		try {
-			aSocket = new DatagramSocket(portNo);
+
 			byte[] buffer = new byte[Constants.PACKET_SIZE];
 			
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 			
-			aSocket.setSoTimeout(30000);
+			//aSocket.setSoTimeout(30000);
 			try {
-				aSocket.receive(request);
+				centralServerSocket.receive(request);
 		    } catch (SocketTimeoutException e) {
 		       // election must be done
 		       return null;
@@ -31,17 +46,15 @@ public class CentralServerConnection {
 			
 			returnValue = parsePacket(request.getData());
 		} 
-		catch (SocketException e) {
-			System.out.println("Socket: " + e.getMessage());
-		} 
 		catch (IOException e) {
 			System.out.println("IO: " + e.getMessage());
 		} 
-		finally {
-			if (aSocket != null)
-				aSocket.close();
-		}
 		return returnValue;
+	}
+	
+	public boolean closeCentralServerSocket(){
+		centralServerSocket.close();
+		return true;
 	}
 	
 	/**

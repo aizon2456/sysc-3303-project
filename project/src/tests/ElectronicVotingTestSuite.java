@@ -11,6 +11,7 @@ import org.junit.runners.Suite;
         VoterTest.class,
         CandidateTest.class,
         DistrictServerTest.class,
+        DistrictServerConnectionTest.class,
         FileInfoReaderTest.class
 })
 public class ElectronicVotingTestSuite {

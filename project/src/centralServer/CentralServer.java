@@ -2,32 +2,25 @@ package centralServer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 import constants.Constants;
 
-public class CentralServer {
+public class CentralServer extends Observable{
 	
 	private Map<String,Map<String,Integer>> votesMap;
 	
-	public void main(String args[]) {
+	public CentralServer(int centralServerPort){
+		
 		//initialize the voting maps
 		votesMap = new HashMap<String,Map<String,Integer>>();
 		
-		// args contains the port number
-		if (args.length != 1) {
-			System.out.println("Usage: java CentralServer <Port Number>");
-			System.exit(1);
-		}
-		else if (Integer.parseInt(args[0]) < 1025 || Integer.parseInt(args[0]) > 65535) {
-			System.out.println("The port number must be between 1025 and 65535.");
-			System.exit(1);
-		}
-		
 		CentralServerConnection connection = new CentralServerConnection();
+		connection.initializeCentralServerPort(centralServerPort);
 		
 		// handle the polling of results until null is received
 		while(true) {
-			String electionResults = connection.receiveCandidateVotes(Integer.parseInt(args[0]));
+			String electionResults = connection.receiveCandidateVotes(centralServerPort);
 			
 			if (electionResults == null) {
 				// Election is over (or assumed so after X time where no new packets have been sent).
@@ -37,6 +30,15 @@ public class CentralServer {
 			// if the election isn't done, parse through the return and set the Map with the appropriate values
 			updateVotes(electionResults);
 		}
+	}
+	
+	public void setCentralServerView(CentralServerView centralServerView){
+		this.addObserver(centralServerView);
+	}
+	
+	public void updateCentralServerView(Object updateObject){
+		this.setChanged();
+		this.notifyObservers(updateObject);
 	}
 	
 	/**
