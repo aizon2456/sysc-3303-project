@@ -11,7 +11,7 @@ public final class Constants {
 	public static final String TEST_COMPLETE = "Testing Done";
 	
 	public static enum packetType {
-		REGISTER, LOGIN, VOTE, RESULT, UPDATE, NO_RESPONSE
+		REGISTER, LOGIN, VOTE, RESULT, NO_RESPONSE
 	}
 
 	public static enum returnCodes {

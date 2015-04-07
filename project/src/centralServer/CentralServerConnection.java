@@ -25,18 +25,16 @@ public class CentralServerConnection {
 	/**
      * Handles the receiving of packets from DistrictServers
      * @param portNo The port number over which packets are transferred
-     * @return The data in string representation which can be parsed
+     * @return The data in byte representation which can be parsed
      */
-	public String receiveCandidateVotes(int portNo) {
-
-		String returnValue = "";
+	public byte[] receiveCandidateVotes(int portNo) {
 		try {
 
 			byte[] buffer = new byte[Constants.PACKET_SIZE];
 			
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 			
-			//aSocket.setSoTimeout(30000);
+			centralServerSocket.setSoTimeout(30000);
 			try {
 				centralServerSocket.receive(request);
 		    } catch (SocketTimeoutException e) {
@@ -44,12 +42,13 @@ public class CentralServerConnection {
 		       return null;
 		    }     
 			
-			returnValue = parsePacket(request.getData());
+			String r = new String(request.getData()).trim();
+			return r.getBytes();
 		} 
 		catch (IOException e) {
 			System.out.println("IO: " + e.getMessage());
+			return null;
 		} 
-		return returnValue;
 	}
 	
 	public boolean closeCentralServerSocket(){
