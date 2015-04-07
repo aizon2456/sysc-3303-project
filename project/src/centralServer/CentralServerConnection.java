@@ -22,6 +22,16 @@ public class CentralServerConnection {
 		return true;
 	}
 	
+	public boolean initializeCentralServerPort(){
+		try {
+			centralServerSocket = new DatagramSocket();
+		} catch (SocketException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	/**
      * Handles the receiving of packets from DistrictServers
      * @param portNo The port number over which packets are transferred

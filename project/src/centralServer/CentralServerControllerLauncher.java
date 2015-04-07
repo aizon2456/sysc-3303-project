@@ -22,6 +22,7 @@ public class CentralServerControllerLauncher {
 			System.out.println("The port number must be between 1025 and 65535.");
 			System.exit(1);
 		}
+		System.out.println("Launching Central Server Controller.");
 		new CentralServerController(portNumber);
 	}
 	

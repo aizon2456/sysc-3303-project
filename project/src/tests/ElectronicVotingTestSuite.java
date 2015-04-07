@@ -12,7 +12,10 @@ import org.junit.runners.Suite;
         CandidateTest.class,
         DistrictServerTest.class,
         DistrictServerConnectionTest.class,
-        FileInfoReaderTest.class
+        FileInfoReaderTest.class,
+        CentralServerConnectionTest.class,
+        CentralServerTest.class,
+        CentralServerViewTest.class
 })
 public class ElectronicVotingTestSuite {
 

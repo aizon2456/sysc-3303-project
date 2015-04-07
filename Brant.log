@@ -1,0 +1,44 @@
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer setUpFileLogger
+INFO: Logger initialized
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer buildVoterCandidateList
+INFO: District name is valid: Brant
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer buildVoterCandidateList
+INFO: List of voters generated.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer buildVoterCandidateList
+INFO: Number of voters: 30
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer buildVoterCandidateList
+INFO: List of candidates generated
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer buildVoterCandidateList
+INFO: Number of candidates 3
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer register
+INFO: Name: Gareth Russo, SIN: 190758144, District: Brant has been successfully registered.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer register
+WARNING: Gareth Russo is already registered.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer register
+WARNING: Name: Gareth TotallyFakeName, SIN: 190758144, District: Brant does not exist.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: LOGIN packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer loginUser
+INFO: login1 has succesfully logged in.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: LOGIN packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer loginUser
+WARNING: TotallyFakeLogin has input the wrong credentials.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: VOTE packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer vote
+INFO: Vote successful! Candidate statuses file updated.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: VOTE packet received
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer vote
+WARNING: login1 has already voted.
+Apr 07, 2015 6:34:15 PM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received

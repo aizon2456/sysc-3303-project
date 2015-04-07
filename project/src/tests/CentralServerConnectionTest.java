@@ -12,7 +12,7 @@ public class CentralServerConnectionTest {
 
     private static final String DISTRICT_SERVER_ADDRESS = "127.0.0.1";
     private static final int DISTRICT_PORT = 2016;
-    private static final String MESSAGE = Constants.packetType.UPDATE.name() + "|Burlington|John|Smith|4";
+    private static final String MESSAGE = "|Burlington|John|Smith|4";
 
     private CentralServerConnection connection;
 
@@ -27,7 +27,8 @@ public class CentralServerConnectionTest {
     		private CentralServerConnection testConnection = new CentralServerConnection();
     		
     	    public void run() {
-    	        String response = testConnection.receiveCandidateVotes(DISTRICT_PORT);
+    	        byte[] responseBytes = testConnection.receiveCandidateVotes(DISTRICT_PORT);
+    	        String response = new String(responseBytes);
     	        assertTrue("Expected packet to contain: " + MESSAGE + ", actually contained: "
     	        + response, response.equals(MESSAGE));
     	    }
