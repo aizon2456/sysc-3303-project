@@ -75,8 +75,11 @@ public class CentralServer extends Observable implements Runnable{
 		
 		// handle the polling of results until null is received
 		while(true) {
-			byte[] electionResults = connection.receiveCandidateVotes(centralServerPort);
-
+			byte[] electionResults = null;
+			if (centralServerPort != 0){
+				System.out.println("FUCK"+centralServerPort);
+				electionResults = connection.receiveCandidateVotes(centralServerPort);
+			}
 			if (electionResults == null) {
 				// Election is over (or assumed so after X time where no new packets have been sent).
 				break;
