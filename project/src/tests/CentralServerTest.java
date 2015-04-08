@@ -22,13 +22,15 @@ public class CentralServerTest {
 	private static final String MESSAGE3 = "Cambridge" + Constants.PACKET_DELIMITER + "John Jacob" + Constants.PACKET_DELIMITER + "7";
 
 	private static final int votes = 27;
+	
+	private static final int PORT_NO = 8586;
 
 	private CentralServer server;
 	private Map<String,Map<String,Integer>> testMap;
 
 	@Before
 	public void setUp() throws Exception {
-		server = new CentralServer();
+		server = new CentralServer(PORT_NO);
 		Thread t = new Thread(server);
 		t.start();
 		testMap = new HashMap<String,Map<String,Integer>>();

@@ -123,6 +123,11 @@ public class DistrictServerConnection {
     public class getPackets implements Runnable {
 
         public void run() {
+        	try {
+				pollingStationSocket.setSoTimeout(20000);
+			} catch (SocketException e) {
+				System.out.println("Socket Error: " + e.getMessage());
+			}
         	while (true) {
 	        	try {
 	                byte[] buffer = new byte[Constants.PACKET_SIZE];
@@ -136,10 +141,14 @@ public class DistrictServerConnection {
 	
 	    		} catch (SocketException e) {
 	    			System.out.println("Socket Error: " + e.getMessage());
+	    		} catch (SocketTimeoutException e) {
+	    			System.out.println("Socket has timed out. Ending the vote for this district.");
+	    			break;
 	    		} catch (IOException e) {
 	    			System.out.println("IO Error: " + e.getMessage());
 	    		}
         	}
+        	pollingStationSocket.close();
         }
     }
 }

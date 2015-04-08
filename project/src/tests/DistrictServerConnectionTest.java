@@ -23,7 +23,7 @@ public class DistrictServerConnectionTest {
 	}
 	@Test
 	public void testBeginListening(){
-		districtServer = new DistrictServerConnection();
+		districtServer = new DistrictServerConnection(portNum);
 
 		final String message  = Constants.packetType.REGISTER + Constants.PACKET_DELIMITER + 
 				"FirstName" + Constants.PACKET_DELIMITER +"LastName" + Constants.PACKET_DELIMITER
@@ -32,7 +32,8 @@ public class DistrictServerConnectionTest {
 
 		Thread t = new Thread(new Runnable() {
 			public void run() {
-				String response = new String(districtServer.beginListening(portNum));
+				districtServer.beginListening();
+				String response = new String(districtServer.getPacketFromQueue());
 
 				assertEquals(response, message);
 			}

@@ -18,16 +18,14 @@ public class CentralServerConnectionTest {
 
     @Before
     public void setUp() {
-        connection = new CentralServerConnection();
+        connection = new CentralServerConnection(DISTRICT_PORT);
     }
 
     @Test
     public void testConnection() {
-    	Thread t = new Thread(new Runnable() {
-    		private CentralServerConnection testConnection = new CentralServerConnection();
-    		
+    	Thread t = new Thread(new Runnable() {    		
     	    public void run() {
-    	        byte[] responseBytes = testConnection.receiveCandidateVotes(DISTRICT_PORT);
+    	        byte[] responseBytes = connection.receiveCandidateVotes();
     	        String response = new String(responseBytes);
     	        assertTrue("Expected packet to contain: " + MESSAGE + ", actually contained: "
     	        + response, response.equals(MESSAGE));
@@ -38,11 +36,4 @@ public class CentralServerConnectionTest {
         
     }
     
-    @Test
-    public void testParseOutput() {
-        byte[] testBytes = (MESSAGE).getBytes();
-        String response = connection.parsePacket(testBytes);
-        assertTrue("Expected packet to contain: " + MESSAGE + ", actually contained: "
-    	        + response, response.equals(MESSAGE));
-    }
 }
