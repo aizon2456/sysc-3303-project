@@ -10,22 +10,12 @@ import constants.Constants;
 public class CentralServer extends Observable implements Runnable{
 
 	private Map<String,Map<String,Integer>> votesMap; // <District, <Candidate, Vote>>
-	private int centralServerPort;
 	private CentralServerConnection connection;
 
 	public CentralServer(int centralServerPort){
-		this.centralServerPort = centralServerPort;
 		//initialize the voting maps
 		votesMap = new HashMap<String,Map<String,Integer>>();
-		CentralServerConnection connection = new CentralServerConnection();
-		connection.initializeCentralServerPort(centralServerPort);
-	}
-	
-	public CentralServer(){
-		//initialize the voting maps
-		votesMap = new HashMap<String,Map<String,Integer>>();
-		CentralServerConnection connection = new CentralServerConnection();
-		connection.initializeCentralServerPort();
+		connection = new CentralServerConnection(centralServerPort);
 	}
 
 	public String[] setElectionResults(byte[] candidateInfo) {
@@ -55,7 +45,7 @@ public class CentralServer extends Observable implements Runnable{
 
 	public Map<String,Map<String,Integer>> districtRequest(String district) {
 		Map<String,Integer> candidateMap = votesMap.get(district);
-		Map<String,Map<String,Integer>> responseMap = new HashMap<>();
+		Map<String,Map<String,Integer>> responseMap = new HashMap<String, Map<String, Integer>>();
 		responseMap.put(district, candidateMap);
 		this.setChanged();
 		this.notifyObservers(responseMap);
@@ -75,11 +65,9 @@ public class CentralServer extends Observable implements Runnable{
 		
 		// handle the polling of results until null is received
 		while(true) {
-			byte[] electionResults = null;
-			if (centralServerPort != 0){
-				System.out.println("FUCK"+centralServerPort);
-				electionResults = connection.receiveCandidateVotes(centralServerPort);
-			}
+
+			byte[] electionResults = connection.receiveCandidateVotes();
+
 			if (electionResults == null) {
 				// Election is over (or assumed so after X time where no new packets have been sent).
 				break;

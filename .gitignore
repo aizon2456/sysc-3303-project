@@ -52,3 +52,5 @@ project/project.iml
 /bin/
 *.csv
 *.txt
+jfreechart-1.0.19/
+

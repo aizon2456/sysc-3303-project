@@ -32,7 +32,8 @@ public class DistrictServerConnectionTest {
 
 		Thread t = new Thread(new Runnable() {
 			public void run() {
-				String response = new String(districtServer.beginListening());
+				districtServer.beginListening();
+				String response = new String(districtServer.getPacketFromQueue());
 
 				assertEquals(response, message);
 			}
