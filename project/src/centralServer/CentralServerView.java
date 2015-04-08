@@ -47,8 +47,7 @@ public class CentralServerView implements Observer{
 		frame.add(graphButton);
 		graphButton.setBounds(50,50,200,30);
 
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	@Override
@@ -71,6 +70,7 @@ public class CentralServerView implements Observer{
 			barGraphFrame.pack();
 			RefineryUtilities.centerFrameOnScreen(barGraphFrame);
 			barGraphFrame.setVisible(true);
+            barGraphFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		}
 	}
 
