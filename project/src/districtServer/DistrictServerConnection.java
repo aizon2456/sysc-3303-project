@@ -3,16 +3,17 @@ package districtServer;
 import constants.Constants;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class DistrictServerConnection {
 
 	private DatagramPacket request;
     private DatagramSocket pollingStationSocket;
     private DatagramSocket centralServerSocket;
+    
+    private Queue<byte[]> packetResponses;
     
     public DistrictServerConnection(int districtServerPort) {
     	try {
@@ -21,28 +22,15 @@ public class DistrictServerConnection {
 		} catch (SocketException e) {
 			System.out.println("Socket Error: " + e.getMessage());
 		}
+    	packetResponses = new LinkedList<byte[]>();
     }
 
 	/**
-	 * This function begins the main server listening loop, it takes messages
-	 * it receives, corrupts them a little then forwards it to the main server.
-	 * The response from the main server is forwarded to the client
-	 * @return data in packet
+	 * Starts the thread to poll for packets
 	 */
-	public byte[] beginListening(){
-		try {
-            byte[] buffer = new byte[Constants.PACKET_SIZE];
-
-            request = new DatagramPacket(buffer, buffer.length);
-            pollingStationSocket.receive(request);
-            return new String(request.getData()).trim().getBytes();
-
-		} catch (SocketException e) {
-			System.out.println("Socket Error: " + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("IO Error: " + e.getMessage());
-		} 
-		return null;
+	public void beginListening(){
+		Thread receivePackets = new Thread(new getPackets());
+		receivePackets.start();
 	}
 
 	/**
@@ -112,5 +100,46 @@ public class DistrictServerConnection {
     public int getPort() {
         if (pollingStationSocket == null) return -1;
         return pollingStationSocket.getLocalPort();
+    }
+    
+    /**
+     * Gets the packet from queue.
+     *
+     * @return The packet's data from queue in byte array form
+     */
+    public byte[] getPacketFromQueue() {
+    	byte[] packetData;
+    	while(true){
+    		synchronized(packetResponses) {
+    			if (packetResponses.size() > 0) {
+    				packetData = packetResponses.remove();
+    				break;
+    			}
+    		}
+    	}
+    	return packetData;	
+    }
+    
+    public class getPackets implements Runnable {
+
+        public void run() {
+        	while (true) {
+	        	try {
+	                byte[] buffer = new byte[Constants.PACKET_SIZE];
+	
+	                request = new DatagramPacket(buffer, buffer.length);
+	                pollingStationSocket.receive(request);
+	                
+	                synchronized(packetResponses) {
+	                	packetResponses.add(new String(request.getData()).trim().getBytes());
+	                }
+	
+	    		} catch (SocketException e) {
+	    			System.out.println("Socket Error: " + e.getMessage());
+	    		} catch (IOException e) {
+	    			System.out.println("IO Error: " + e.getMessage());
+	    		}
+        	}
+        }
     }
 }

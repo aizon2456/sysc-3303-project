@@ -42,10 +42,11 @@ public class DistrictServer extends Thread{
 	public void run(){
 		byte[] packetData;
 
+		LOGGER.info("Listening for requests!");
+        districtServerConnection.beginListening();
+        
         while(true){
-			LOGGER.info("Listening for requests!");
-            packetData = districtServerConnection.beginListening();
-
+        	packetData = districtServerConnection.getPacketFromQueue();
             LOGGER.info("Received request: " + new String(packetData));
 
 			String returnCode = parsePacketDataAndPerformCorrespondingAction(packetData);

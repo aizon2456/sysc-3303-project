@@ -65,28 +65,4 @@ public class CentralServerConnection {
 		centralServerSocket.close();
 		return true;
 	}
-	
-	/**
-	 * This function takes in the data received, parses out the information
-	 * then passes it all to the CentralServer.
-	 * 
-	 * @param response The packet being passed in by the current DistrictServer
-	 * @return The data string
-	 */
-	public String parsePacket(byte[] response){
-		
-		String resp = new String(response);
-		String data = "";
-		
-//		for (int r = 0; r < resp.length(); r++) {
-//            if ((char)response[r] == Constants.PACKET_END) {
-//                break;
-//            }
-//            else {
-//                data += (char)response[r];
-//            }
-//		}
-		
-		return new String(response).trim();
-	}
 }
