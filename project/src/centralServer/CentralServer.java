@@ -1,11 +1,11 @@
 package centralServer;
 
+import constants.Constants;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-
-import constants.Constants;
 
 public class CentralServer extends Observable implements Runnable{
 
@@ -29,10 +29,11 @@ public class CentralServer extends Observable implements Runnable{
 			int voteCount = Integer.parseInt(info[i+1]);
 
 			Map<String,Integer> temp;
-			if (votesMap.get(districtName) != null)
-				temp = votesMap.get(districtName);
-			else
-				temp = new HashMap<String, Integer>();
+			if (votesMap.get(districtName) != null) {
+                temp = votesMap.get(districtName);
+            } else {
+                temp = new HashMap<String, Integer>();
+            }
 
 			temp.put(name, voteCount);
 			votesMap.put(districtName, temp);
@@ -44,7 +45,7 @@ public class CentralServer extends Observable implements Runnable{
 	}
 
 	public Map<String,Map<String,Integer>> districtRequest(String district) {
-		Map<String,Integer> candidateMap = votesMap.get(district);
+		Map<String,Integer> candidateMap = new HashMap<String,Integer>(votesMap.get(district));
 		Map<String,Map<String,Integer>> responseMap = new HashMap<String, Map<String, Integer>>();
 		responseMap.put(district, candidateMap);
 		this.setChanged();

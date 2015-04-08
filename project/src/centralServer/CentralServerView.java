@@ -47,7 +47,7 @@ public class CentralServerView implements Observer{
 		frame.add(graphButton);
 		graphButton.setBounds(50,50,200,30);
 
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	@Override
@@ -55,6 +55,7 @@ public class CentralServerView implements Observer{
         System.out.println("Received Update");
 		if(arg1 instanceof String[]){
 			String[] districts = (String[])arg1;
+            districtList.removeAllItems();
 			for(Object i : (String[])arg1){
 				districtList.addItem(i);
 			}
@@ -70,7 +71,7 @@ public class CentralServerView implements Observer{
 			barGraphFrame.pack();
 			RefineryUtilities.centerFrameOnScreen(barGraphFrame);
 			barGraphFrame.setVisible(true);
-            barGraphFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            barGraphFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
 	}
 

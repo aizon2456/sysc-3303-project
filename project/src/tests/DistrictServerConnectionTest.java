@@ -1,9 +1,12 @@
 package tests;
 
+import constants.Constants;
 import districtServer.DistrictServerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.*;
 
 public class DistrictServerConnectionTest {
 
@@ -17,39 +20,41 @@ public class DistrictServerConnectionTest {
 	}
 	@Test
 	public void testBeginListening(){
-//		districtServer = new DistrictServerConnection(portNum);
-//
-//		final String message  = Constants.packetType.REGISTER + Constants.PACKET_DELIMITER +
-//				"FirstName" + Constants.PACKET_DELIMITER +"LastName" + Constants.PACKET_DELIMITER
-//				+ "123456789" + Constants.PACKET_DELIMITER + "LoginId" + Constants.PACKET_DELIMITER
-//				+ "Password";
-//
-//		Thread t = new Thread(new Runnable() {
-//			public void run() {
-//				districtServer.beginListening();
+		districtServer = new DistrictServerConnection(portNum);
+
+		final String message  = Constants.packetType.REGISTER + Constants.PACKET_DELIMITER +
+				"FirstName" + Constants.PACKET_DELIMITER +"LastName" + Constants.PACKET_DELIMITER
+				+ "123456789" + Constants.PACKET_DELIMITER + "LoginId" + Constants.PACKET_DELIMITER
+				+ "Password";
+
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+                System.out.println("Started Listening...");
+				byte[] response = districtServer.beginListening();
+                System.out.println(response);
+                System.out.println("HERE");
 //				String response = new String(districtServer.getPacketFromQueue());
 //
 //				assertEquals(response, message);
-//			}
-//		});
-//		t.start();
-//		Thread r = new Thread(new MockServer(portNum, Constants.PACKET_SIZE, message, "127.0.0.1"));
-//		r.start();
+			}
+		});
+		t.start();
+		Thread r = new Thread(new MockServer(portNum + 1, Constants.PACKET_SIZE, message, "127.0.0.1"));
+		r.start();
 //
-//		String message2 = Constants.returnCodes.LOGIN_EXISTS.name();
+		String message2 = Constants.returnCodes.LOGIN_EXISTS.name();
 //
-//		Thread m = new Thread(new MockServer(portNum + 1, Constants.PACKET_SIZE)); // create mock server
-//		m.start();
-//		try {
-//			districtServer.send(message2, InetAddress.getLocalHost(), portNum+1);
-//		} catch (UnknownHostException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//
+		Thread m = new Thread(new MockServer(portNum + 2, Constants.PACKET_SIZE)); // create mock server
+		m.start();
+
+		try {
+			districtServer.send(message2, InetAddress.getLocalHost(), portNum+1);
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 //		assertEquals(true,true);
 //
-//		System.out.println("WE'RE DONE");
 	}
 
 	@After

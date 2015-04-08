@@ -1,50 +1,110 @@
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer setUpFileLogger
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer setUpFileLogger
 INFO: Logger initialized
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer buildVoterCandidateList
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: District name is valid: Burlington
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer buildVoterCandidateList
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of voters generated.
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer buildVoterCandidateList
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of voters: 37
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer buildVoterCandidateList
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: List of candidates generated
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer buildVoterCandidateList
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer buildVoterCandidateList
 INFO: Number of candidates 3
-Apr 08, 2015 12:53:37 AM districtServer.DistrictServer run
+Apr 08, 2015 10:18:56 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Apr 08, 2015 12:54:01 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:21 AM districtServer.DistrictServer run
 INFO: Received request: REGISTER&Hedwig&Carr&962180000&A&A
-Apr 08, 2015 12:54:01 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Apr 08, 2015 10:19:21 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: REGISTER packet received
-Apr 08, 2015 12:54:01 AM districtServer.DistrictServer register
+Apr 08, 2015 10:19:21 AM districtServer.DistrictServer register
 INFO: Name: Hedwig Carr, SIN: 962180000, District: Burlington has been successfully registered.
-Apr 08, 2015 12:54:01 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:21 AM districtServer.DistrictServer run
 INFO: Result of packet: REG_SUCCESS
-Apr 08, 2015 12:54:01 AM districtServer.DistrictServer run
-INFO: Message sent to port: 55055 at address: /127.0.0.1
-Apr 08, 2015 12:54:01 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:21 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:19:21 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Apr 08, 2015 12:54:05 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:27 AM districtServer.DistrictServer run
 INFO: Received request: LOGIN&A&A
-Apr 08, 2015 12:54:05 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Apr 08, 2015 10:19:27 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: LOGIN packet received
-Apr 08, 2015 12:54:05 AM districtServer.DistrictServer loginUser
+Apr 08, 2015 10:19:27 AM districtServer.DistrictServer loginUser
 INFO: A has succesfully logged in.
-Apr 08, 2015 12:54:05 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:27 AM districtServer.DistrictServer run
 INFO: Result of packet: LOGIN_SUCCESS&Uma Cook&594286536&Sybill Dillon&947724860&Leigh Galloway&161302070
-Apr 08, 2015 12:54:05 AM districtServer.DistrictServer run
-INFO: Message sent to port: 55055 at address: /127.0.0.1
-Apr 08, 2015 12:54:05 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:27 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:19:27 AM districtServer.DistrictServer run
 INFO: Listening for requests!
-Apr 08, 2015 12:54:08 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:44 AM districtServer.DistrictServer run
 INFO: Received request: VOTE&A&594286536
-Apr 08, 2015 12:54:08 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+Apr 08, 2015 10:19:44 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
 INFO: VOTE packet received
-Apr 08, 2015 12:54:08 AM districtServer.DistrictServer vote
+Apr 08, 2015 10:19:44 AM districtServer.DistrictServer vote
 INFO: Vote successful! Candidate statuses file updated.
-Apr 08, 2015 12:54:08 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:44 AM districtServer.DistrictServer run
 INFO: Result of packet: VOTE_SUCCESS
-Apr 08, 2015 12:54:08 AM districtServer.DistrictServer run
-INFO: Message sent to port: 55055 at address: /127.0.0.1
-Apr 08, 2015 12:54:08 AM districtServer.DistrictServer run
+Apr 08, 2015 10:19:44 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:19:44 AM districtServer.DistrictServer run
+INFO: Listening for requests!
+Apr 08, 2015 10:20:51 AM districtServer.DistrictServer run
+INFO: Received request: LOGIN&A&A
+Apr 08, 2015 10:20:51 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: LOGIN packet received
+Apr 08, 2015 10:20:51 AM districtServer.DistrictServer loginUser
+INFO: A has succesfully logged in.
+Apr 08, 2015 10:20:51 AM districtServer.DistrictServer run
+INFO: Result of packet: LOGIN_SUCCESS&Uma Cook&594286536&Sybill Dillon&947724860&Leigh Galloway&161302070
+Apr 08, 2015 10:20:51 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:20:51 AM districtServer.DistrictServer run
+INFO: Listening for requests!
+Apr 08, 2015 10:20:53 AM districtServer.DistrictServer run
+INFO: Received request: VOTE&A&594286536
+Apr 08, 2015 10:20:53 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: VOTE packet received
+Apr 08, 2015 10:20:53 AM districtServer.DistrictServer vote
+WARNING: A has already voted.
+Apr 08, 2015 10:20:53 AM districtServer.DistrictServer run
+INFO: Result of packet: ALREADY_VOTED
+Apr 08, 2015 10:20:53 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:20:53 AM districtServer.DistrictServer run
+INFO: Listening for requests!
+Apr 08, 2015 10:21:41 AM districtServer.DistrictServer run
+INFO: Received request: REGISTER&Bert&Delacruz&961309131&B&B
+Apr 08, 2015 10:21:41 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: REGISTER packet received
+Apr 08, 2015 10:21:41 AM districtServer.DistrictServer register
+INFO: Name: Bert Delacruz, SIN: 961309131, District: Burlington has been successfully registered.
+Apr 08, 2015 10:21:41 AM districtServer.DistrictServer run
+INFO: Result of packet: REG_SUCCESS
+Apr 08, 2015 10:21:41 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:21:41 AM districtServer.DistrictServer run
+INFO: Listening for requests!
+Apr 08, 2015 10:21:47 AM districtServer.DistrictServer run
+INFO: Received request: LOGIN&B&B
+Apr 08, 2015 10:21:47 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: LOGIN packet received
+Apr 08, 2015 10:21:47 AM districtServer.DistrictServer loginUser
+INFO: B has succesfully logged in.
+Apr 08, 2015 10:21:47 AM districtServer.DistrictServer run
+INFO: Result of packet: LOGIN_SUCCESS&Uma Cook&594286536&Sybill Dillon&947724860&Leigh Galloway&161302070
+Apr 08, 2015 10:21:47 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:21:47 AM districtServer.DistrictServer run
+INFO: Listening for requests!
+Apr 08, 2015 10:21:50 AM districtServer.DistrictServer run
+INFO: Received request: VOTE&B&947724860
+Apr 08, 2015 10:21:50 AM districtServer.DistrictServer parsePacketDataAndPerformCorrespondingAction
+INFO: VOTE packet received
+Apr 08, 2015 10:21:50 AM districtServer.DistrictServer vote
+INFO: Vote successful! Candidate statuses file updated.
+Apr 08, 2015 10:21:50 AM districtServer.DistrictServer run
+INFO: Result of packet: VOTE_SUCCESS
+Apr 08, 2015 10:21:50 AM districtServer.DistrictServer run
+INFO: Message sent to port: 64795 at address: /127.0.0.1
+Apr 08, 2015 10:21:50 AM districtServer.DistrictServer run
 INFO: Listening for requests!
