@@ -11,7 +11,7 @@ public class CentralServerConnection {
 	DatagramSocket centralServerSocket = null;
     
 	public CentralServerConnection(int centralServerPort){
-		System.out.println("CentralServerConnection initialized");
+		System.out.println("CentralServerConnection initialized on port " + centralServerPort);
 		try {
 			centralServerSocket = new DatagramSocket(centralServerPort);
 		} catch (SocketException e) {
@@ -29,10 +29,11 @@ public class CentralServerConnection {
 			byte[] buffer = new byte[Constants.PACKET_SIZE];
 			
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-			
-			centralServerSocket.setSoTimeout(30000);
+
 			try {
+                System.out.println("LISTENING");
 				centralServerSocket.receive(request);
+                System.out.println("RECEIVED");
 		    } catch (SocketTimeoutException e) {
 		       // election must be done
 		       return null;

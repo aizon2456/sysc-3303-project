@@ -1,19 +1,5 @@
 package centralServer;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -26,6 +12,15 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RefineryUtilities;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Observable;
+import java.util.Observer;
 
 public class CentralServerView implements Observer{
 
@@ -52,12 +47,13 @@ public class CentralServerView implements Observer{
 		frame.add(graphButton);
 		graphButton.setBounds(50,50,200,30);
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+        System.out.println("Received Update");
 		if(arg1 instanceof String[]){
 			String[] districts = (String[])arg1;
 			for(Object i : (String[])arg1){

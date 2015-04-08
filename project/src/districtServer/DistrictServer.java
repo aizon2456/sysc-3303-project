@@ -42,11 +42,10 @@ public class DistrictServer extends Thread{
 	public void run(){
 		byte[] packetData;
 
-		LOGGER.info("Listening for requests!");
-        districtServerConnection.beginListening();
-        
         while(true){
-        	packetData = districtServerConnection.getPacketFromQueue();
+			LOGGER.info("Listening for requests!");
+            packetData = districtServerConnection.beginListening();
+
             LOGGER.info("Received request: " + new String(packetData));
 
 			String returnCode = parsePacketDataAndPerformCorrespondingAction(packetData);
@@ -57,7 +56,7 @@ public class DistrictServer extends Thread{
 			LOGGER.info("Message sent to port: " + port + " at address: " + districtServerConnection.getRequest().getAddress());
 
 			
-			
+			System.out.println("CHECKING CANDIDATE SIZE...");
 			if (candidates.size() > 0) {
 				String output = districtName;
 				for (int i = 0; i < candidates.size(); i++) {
@@ -67,6 +66,7 @@ public class DistrictServer extends Thread{
 				}
 				InetAddress centralAddress;
 				try {
+                    System.out.println("SENDING TO CENTRAL SERVER");
 					centralAddress = InetAddress.getByName(centralServerIP);
 					districtServerConnection.updateCentralServer(output, centralAddress, centralServerPort);
 				} catch (UnknownHostException e) {

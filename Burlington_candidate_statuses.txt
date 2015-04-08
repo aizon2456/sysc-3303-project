@@ -1,4 +1,4 @@
 Candidates:
-Name: Uma Cook, SIN: 594286536, Votes: 1
-Name: Sybill Dillon, SIN: 947724860, Votes: 0
-Name: Leigh Galloway, SIN: 161302070, Votes: 0
+Name: Uma Cook, SIN: 594286536, Votes: 0
+Name: Sybill Dillon, SIN: 947724860, Votes: 1
+Name: Leigh Galloway, SIN: 161302070, Votes: 1

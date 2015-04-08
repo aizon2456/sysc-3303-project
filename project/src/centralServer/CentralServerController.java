@@ -1,9 +1,8 @@
 package centralServer;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 
 public class CentralServerController implements ActionListener{
 
@@ -14,6 +13,7 @@ public class CentralServerController implements ActionListener{
 		centralServer = new CentralServer(centralServerPort);
 		centralServerView = new CentralServerView(this);
 		centralServer.setCentralServerView(centralServerView);
+        centralServer.runServerRun();
 	}
 
 	@Override
